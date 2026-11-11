@@ -3,11 +3,15 @@ import { site, agent, brokerage, mortgageCompany, requiredBeforeLaunch, verifyLi
 const missing = requiredBeforeLaunch.filter((r) => !r.value).map((r) => r.label);
 import EqualHousing from './EqualHousing.astro';
 import { t, viPath, type Lang } from '../i18n/strings';
+import { serviceLinks } from '../content/services';
+import { cities } from '../data/cities';
 interface Props {
   lang?: Lang;
 }
 const { lang = 'en' } = Astro.props;
 const tr = t(lang);
+const services = serviceLinks(lang);
+const areaHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : `/areas/${slug}/`);
 const items = nav.filter((n) => n.ready).map((n) => ({ ...n, label: lang === 'vi' ? n.labelVi : n.label, href: lang === 'vi' ? viPath(n.href) : n.href }));
 const year = new Date().getFullYear();
 const a = brokerage.address;
@@ -31,6 +35,18 @@ const a = brokerage.address;
         {a.city}, {a.region} {a.postalCode}
       </address>
     </div>
+    <nav aria-label={lang === 'vi' ? 'Dịch vụ' : 'Services'}>
+      <p class="f-head">{lang === 'vi' ? 'Dịch vụ' : 'Services'}</p>
+      <ul>
+        {services.map((sv) => <li><a href={sv.href}>{sv.label}</a></li>)}
+      </ul>
+    </nav>
+    <nav aria-label={lang === 'vi' ? 'Khu vực' : 'Areas'}>
+      <p class="f-head">{lang === 'vi' ? 'Khu vực' : 'Areas'}</p>
+      <ul class="f-areas">
+        {cities.map((ct) => <li><a href={areaHref(ct.slug)}>{ct.name}</a></li>)}
+      </ul>
+    </nav>
     {items.length > 0 && (
       <nav aria-label={tr.footerNav}>
         <p class="f-head">{tr.site}</p>
@@ -95,6 +111,10 @@ const a = brokerage.address;
   }
   address {
     font-style: normal;
+  }
+  .f-areas {
+    columns: 2;
+    column-gap: 1rem;
   }
   ul {
     list-style: none;

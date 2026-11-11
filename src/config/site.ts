@@ -85,8 +85,8 @@ export const verifyLinks = {
  * links to a page that hasn't been built yet.
  */
 export const nav: { label: string; labelVi: string; href: string; ready: boolean }[] = [
-  { label: 'Loans', labelVi: 'Khoản vay', href: '/loans/', ready: false },
-  { label: 'Buy & Sell', labelVi: 'Mua & Bán', href: '/real-estate/', ready: false },
+  { label: 'Loan Officer', labelVi: 'Cho vay', href: '/loan-officer/', ready: true },
+  { label: 'Realtor', labelVi: 'Realtor', href: '/real-estate/', ready: true },
   { label: 'Areas', labelVi: 'Khu vực', href: '/areas/', ready: true },
   { label: 'Guides', labelVi: 'Hướng dẫn', href: '/guides/', ready: false },
   { label: 'Tools', labelVi: 'Công cụ', href: '/tools/', ready: false },
