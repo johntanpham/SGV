@@ -53,7 +53,7 @@ const a = brokerage.address;
       · NMLS #{mortgageCompany.nmlsId} · {mortgageCompany.regulator}{mortgageCompany.dreLicense ? <>, DRE #{mortgageCompany.dreLicense}</> : null}
     </p>
     <p>
-      {tr.realEstate} <strong>{brokerage.name}</strong> · {brokerage.regulator} · DRE #{brokerage.dreLicense}
+      {tr.realEstate} <strong>{brokerage.legalName}</strong>, dba {brokerage.name} · {brokerage.regulator} · DRE #{brokerage.dreLicense}
     </p>
     <p>{tr.disclaimer}</p>
     {missing.length > 0 && <span hidden data-missing-before-launch={missing.join('; ')}></span>}

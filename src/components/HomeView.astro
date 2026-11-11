@@ -15,6 +15,11 @@ export interface HomeContent {
   helps: { h: string; p: string }[];
   citiesH2: string;
   citiesIntro: string;
+  programsH2: string;
+  programsIntro: string;
+  programs: { h: string; p: string }[];
+  stepsH2: string;
+  steps: { h: string; p: string }[];
   faqH2: string;
   faq: [string, string][];
   allAreas: string;
@@ -73,6 +78,31 @@ const cityHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : 
         </li>
       ))}
     </ul>
+  </section>
+
+  <section class="wrap">
+    <h2>{c.programsH2}</h2>
+    <p>{c.programsIntro}</p>
+    <ul class="help-grid">
+      {c.programs.map((x) => (
+        <li class="card">
+          <h3>{x.h}</h3>
+          <p>{x.p}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2>{c.stepsH2}</h2>
+    <ol class="steps">
+      {c.steps.map((x) => (
+        <li>
+          <h3>{x.h}</h3>
+          <p>{x.p}</p>
+        </li>
+      ))}
+    </ol>
   </section>
 
   <section class="wrap">
@@ -161,6 +191,43 @@ const cityHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : 
     margin-top: 0;
   }
   .help-grid p {
+    margin: 0;
+  }
+  .steps {
+    list-style: none;
+    counter-reset: step;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding: 1.25rem 1.25rem 1.25rem 4rem;
+    background: var(--white);
+    border: 1px solid var(--sand-200);
+    border-radius: var(--radius);
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 1.25rem;
+    top: 1.25rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: var(--jade-800);
+    color: var(--white);
+    font-weight: 700;
+    display: grid;
+    place-items: center;
+  }
+  .steps h3 {
+    margin-top: 0;
+  }
+  .steps p {
     margin: 0;
   }
   .city-list {

@@ -91,6 +91,8 @@ test('every page shows the licence disclosures and Equal Housing Opportunity', a
     await expect(footer).toContainText('DRE #02075357');
     await expect(footer).toContainText('O.A.B.M. Inc.');
     await expect(footer).toContainText('NMLS #1907086');
+    await expect(footer).toContainText('DRE #02101087');
+    await expect(footer).toContainText('Jade Rose Financial Inc.');
     await expect(footer).toContainText('Equal Housing Opportunity');
   }
 });

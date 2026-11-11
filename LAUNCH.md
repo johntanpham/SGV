@@ -8,7 +8,7 @@ Tick each box when done. Menu names are current as of November 2026; if a label 
 The current one-page site shows "NMLS #000000". Change it in whatever tool built that page to:
 `Bao Nguyen, Broker Associate · DRE #02014645 · NMLS #1317747 · Virchu Financial & Investment, DRE #02075357`
 
-### ☐ 2. O.A.B.M. Inc.'s DRE licence number (last licence detail needed)
+### ✅ 2. O.A.B.M. Inc.'s DRE licence number: 02101087 (DRE record checked 2026-11-10; real estate corp is Jade Rose Financial Inc. dba Virchu Financial & Investment, DRE 02075357)
 Bao's mortgage licence is sponsored by **O.A.B.M. Inc. (dba Virchu Capital), NMLS #1907086** (confirmed on NMLS Consumer Access 2026-11-10).
 1. https://www.nmlsconsumeraccess.org → search `1907086` → open O.A.B.M. INC.
 2. Under **State Licenses/Registrations**, click **California - DRE** (or **View Details**) → copy the **License Number** (8 digits).

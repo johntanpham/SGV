@@ -40,6 +40,8 @@ export const agent = {
 
 /** Real estate brokerage (Bao's DRE broker associate licence is under this broker). */
 export const brokerage = {
+  /** DRE record 02075357 (checked 2026-11-10): Jade Rose Financial Inc., DBA "Virchu Financial and Investment". */
+  legalName: 'Jade Rose Financial Inc.',
   name: 'Virchu Financial & Investment',
   url: 'https://virchufi.com/',
   broker: 'Jade Chu',
@@ -62,8 +64,8 @@ export const mortgageCompany = {
   legalName: 'O.A.B.M. Inc.',
   dba: 'Virchu Capital',
   nmlsId: '1907086',
-  /** O.A.B.M. Inc.'s own DRE corporation licence number. REQUIRED before launch. */
-  dreLicense: '',
+  /** DRE corporation licence (record checked 2026-11-10: licensed, MLO endorsement 1907086, expires 09/10/27). */
+  dreLicense: '02101087',
   regulator: 'Licensed by the California Department of Real Estate',
 } as const;
 

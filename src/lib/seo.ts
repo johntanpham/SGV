@@ -46,6 +46,7 @@ export function organizationLd() {
     '@type': ['Organization', 'FinancialService', 'RealEstateAgent'],
     '@id': ids.organization,
     name: brokerage.name,
+    legalName: brokerage.legalName,
     url: brokerage.url,
     telephone: `+1${agent.phone}`,
     address: {
