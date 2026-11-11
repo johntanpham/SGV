@@ -2,6 +2,7 @@
 import { agent, brokerage, formatPhone, telHref } from '../config/site';
 import { t, viPath, type Lang } from '../i18n/strings';
 import { cities } from '../data/cities';
+import Faq from './Faq.astro';
 
 export interface HomeContent {
   eyebrow: string;
@@ -14,6 +15,9 @@ export interface HomeContent {
   helps: { h: string; p: string }[];
   citiesH2: string;
   citiesIntro: string;
+  faqH2: string;
+  faq: [string, string][];
+  allAreas: string;
 }
 interface Props {
   c: HomeContent;
@@ -76,8 +80,13 @@ const cityHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : 
     <p>{c.citiesIntro}</p>
     <ul class="city-list">
       {cities.map((c) => <li><a href={cityHref(c.slug)}>{c.name}</a></li>)}
+      <li><a href={lang === 'vi' ? '/vi/areas/' : '/areas/'}>{c.allAreas}</a></li>
     </ul>
   </section>
+
+  <div class="wrap">
+    <Faq heading={c.faqH2} items={c.faq} />
+  </div>
 <style>
   .hero {
     background: linear-gradient(180deg, var(--white) 0%, var(--sand-50) 100%);

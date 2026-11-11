@@ -112,3 +112,15 @@ export function breadcrumbLd(crumbs: Crumb[]) {
 export function graph(nodes: object[]) {
   return { '@context': 'https://schema.org', '@graph': nodes };
 }
+
+export function faqLd(items: [string, string][], lang: string) {
+  return {
+    '@type': 'FAQPage',
+    inLanguage: lang,
+    mainEntity: items.map(([q, a]) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  };
+}

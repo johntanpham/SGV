@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeView, { type HomeContent } from '../components/HomeView.astro';
 import { agent } from '../config/site';
-import { buildTitle } from '../lib/seo';
+import { buildTitle, faqLd } from '../lib/seo';
 
 const title = buildTitle('San Gabriel Valley Mortgage Broker | Bao Nguyen', { brand: false });
 const description =
@@ -24,8 +24,16 @@ const c: HomeContent = {
   ],
   citiesH2: 'Cities I serve',
   citiesIntro: "I work across the San Gabriel Valley, from the office in West Covina. The cities I'm asked about most:",
+  allAreas: 'All areas',
+  faqH2: 'Frequently asked questions',
+  faq: [
+    ['Do you only help with loans, or with buying and selling too?', 'Both. Bao is a licensed mortgage loan originator and a real estate broker associate, so he can arrange your loan and represent you when you buy or sell.'],
+    ['Do you speak Vietnamese?', 'Yes. Bao works in Vietnamese and English, from the first call through closing.'],
+    ['Which areas do you serve?', 'The whole San Gabriel Valley, including Alhambra, Monterey Park, San Gabriel, Rosemead, Temple City, El Monte, Arcadia and West Covina, plus the rest of Los Angeles County.'],
+    ['What does it cost to talk to you?', 'Nothing. The first conversation is free, and you get a Loan Estimate showing every cost before you commit to anything.'],
+  ],
 };
 ---
-<BaseLayout title={title} description={description} path="/" crumbs={[{ name: 'Home', path: '/' }]}>
+<BaseLayout title={title} description={description} path="/" crumbs={[{ name: 'Home', path: '/' }]} schema={[faqLd(c.faq, 'en')]}>
   <HomeView c={c} lang="en" />
 </BaseLayout>

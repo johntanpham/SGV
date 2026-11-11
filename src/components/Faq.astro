@@ -1,0 +1,24 @@
+---
+/** Short FAQ block. Questions are also returned as FAQPage JSON-LD by faqLd(). */
+interface Props {
+  heading: string;
+  items: [string, string][];
+  id?: string;
+}
+const { heading, items, id = 'faq' } = Astro.props;
+---
+<section class="faq" aria-labelledby={id}>
+  <h2 id={id}>{heading}</h2>
+  {items.map(([q, a]) => (
+    <div class="qa">
+      <h3>{q}</h3>
+      <p>{a}</p>
+    </div>
+  ))}
+</section>
+
+<style>
+  .qa h3 {
+    font-size: 1.125rem;
+  }
+</style>

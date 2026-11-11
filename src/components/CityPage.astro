@@ -1,11 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { cityCopy } from '../i18n/city-copy';
-import { citiesBySlug, CENSUS_SOURCE, VIET_SOURCE, type City } from '../data/cities';
+import { cities, citiesBySlug, CENSUS_SOURCE, VIET_SOURCE, type City } from '../data/cities';
+import Faq from './Faq.astro';
 import { loanLimits, hop } from '../data/loan-limits';
 import { agent, formatPhone, telHref } from '../config/site';
 import { t, viPath, type Lang } from '../i18n/strings';
-import { ids, canonicalUrl } from '../lib/seo';
+import { ids, canonicalUrl, faqLd } from '../lib/seo';
 
 interface Props {
   city: City;
@@ -21,7 +22,10 @@ const crumbs = [
   { name: c.crumbAreas, path: p('/areas/') },
   { name: city.name, path },
 ];
+// Every other city, nearest neighbours first.
 const neighbors = city.neighbors.map((s) => citiesBySlug[s]).filter(Boolean);
+const others = [...neighbors, ...cities.filter((x) => x.slug !== city.slug && !city.neighbors.includes(x.slug))];
+const anchor = (name: string) => (lang === 'vi' ? `Môi giới vay ${name}` : `${name} mortgage broker`);
 const schema = [
   {
     '@type': 'Service',
@@ -37,6 +41,7 @@ const schema = [
     availableLanguage: ['en', 'vi'],
     inLanguage: lang,
   },
+  faqLd(c.faq, lang),
 ];
 ---
 <BaseLayout title={c.title} description={c.description} path={path} crumbs={crumbs} lang={lang} indexable={city.indexable} schema={schema}>
@@ -93,20 +98,12 @@ const schema = [
       <p>{c.langP}</p>
     </section>
 
-    <section aria-labelledby="faq">
-      <h2 id="faq">{c.faqH2}</h2>
-      {c.faq.map(([q, a]) => (
-        <div class="qa">
-          <h3>{q}</h3>
-          <p>{a}</p>
-        </div>
-      ))}
-    </section>
+    <Faq heading={c.faqH2} items={c.faq} />
 
     <section aria-labelledby="near">
       <h2 id="near">{c.nearH2}</h2>
       <ul class="near">
-        {neighbors.map((nb) => <li><a href={p(`/areas/${nb.slug}/`)}>{nb.name}</a></li>)}
+        {others.map((nb) => <li><a href={p(`/areas/${nb.slug}/`)}>{anchor(nb.name)}</a></li>)}
         <li><a href={p('/areas/')}>{c.allAreas}</a></li>
       </ul>
     </section>
@@ -156,9 +153,6 @@ const schema = [
   }
   .source {
     line-height: 1.9;
-  }
-  .qa h3 {
-    font-size: 1.125rem;
   }
   .near {
     display: flex;

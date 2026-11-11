@@ -4,6 +4,8 @@ import { cities, CENSUS_SOURCE } from '../data/cities';
 import { cityFacts, usd } from '../i18n/city-copy';
 import { loanLimits, hop } from '../data/loan-limits';
 import { t, viPath, type Lang } from '../i18n/strings';
+import Faq from './Faq.astro';
+import { faqLd } from '../lib/seo';
 
 interface Props {
   lang: Lang;
@@ -44,8 +46,22 @@ const crumbs = [
   { name: tr.home, path: p('/') },
   { name: copy.crumb, path },
 ];
+const hopCities = cities.filter((c) => cityFacts(c).inHop).map((c) => c.name);
+const listJoin = (a: string[], and: string) => (a.length < 2 ? a.join('') : `${a.slice(0, -1).join(', ')} ${and} ${a.at(-1)}`);
+const lim = usd(loanLimits.conforming.oneUnit);
+const faq: [string, string][] = vi
+  ? [
+      ['Hạn mức vay có khác nhau giữa các thành phố ở San Gabriel Valley không?', `Không. Mọi thành phố trên trang này đều thuộc Quận Los Angeles, nên hạn mức năm ${loanLimits.year} giống nhau: ${lim} cho khoản vay conforming và FHA đối với nhà một căn.`],
+      ['Thành phố nào được hỗ trợ tiền trả trước của Quận Los Angeles?', `Trong các thành phố trên, ${listJoin(hopCities, 'và')} nằm trong danh sách Chương trình Sở hữu Nhà (HOP) của LACDA. Người mua ở các thành phố khác vẫn có thể dùng chương trình toàn tiểu bang CalHFA MyHome.`],
+      ['Bạn có phục vụ thành phố không có trong danh sách không?', 'Có. Tôi phục vụ toàn bộ San Gabriel Valley và cả Quận Los Angeles, bằng tiếng Việt hoặc tiếng Anh. Hãy gọi hoặc nhắn tin.'],
+    ]
+  : [
+      ['Are loan limits different in each San Gabriel Valley city?', `No. Every city on this page is in Los Angeles County, so the ${loanLimits.year} limits are the same everywhere: ${lim} for conforming and FHA loans on a one-unit home.`],
+      ['Which cities qualify for Los Angeles County down payment help?', `Of the cities above, ${listJoin(hopCities, 'and')} are on LACDA's Home Ownership Program list. Buyers in the other cities can still use statewide programs such as CalHFA MyHome.`],
+      ['Do you serve cities that are not listed here?', 'Yes. I serve the whole San Gabriel Valley and the rest of Los Angeles County, in English or Vietnamese. Call or text.'],
+    ];
 ---
-<BaseLayout title={copy.title} description={copy.description} path={path} crumbs={crumbs} lang={lang}>
+<BaseLayout title={copy.title} description={copy.description} path={path} crumbs={crumbs} lang={lang} schema={[faqLd(faq, lang)]}>
   <section class="wrap hub">
     <h1>{copy.h1}</h1>
     <p class="lead">{copy.lead}</p>
@@ -63,6 +79,7 @@ const crumbs = [
       })}
     </ul>
     <p>{copy.more}</p>
+    <Faq heading={vi ? 'Câu hỏi thường gặp' : 'Frequently asked questions'} items={faq} />
     <p class="source">
       {copy.source}: <a href={CENSUS_SOURCE.url} rel="noopener">{CENSUS_SOURCE.name}</a>;
       <a href={hop.source.url} rel="noopener">{hop.source.name}</a>.

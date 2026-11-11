@@ -52,7 +52,7 @@ export function cityCopy(c: City, lang: Lang) {
       buyP2: 'Vì tôi vừa là chuyên viên cho vay vừa là môi giới địa ốc, việc duyệt trước, tìm nhà và đặt giá mua đều do cùng một người lo.',
       langH2: 'Phục vụ bằng tiếng Việt và tiếng Anh',
       langP: `${c.otherLanguage}% cư dân ${n} nói một ngôn ngữ khác tiếng Anh tại nhà.${c.vietnamese ? ` Khoảng ${num(c.vietnamese.people)} cư dân (${c.vietnamese.pct}%) là người Mỹ gốc Việt.` : ''} Tôi giải thích mọi lựa chọn vay, giấy tờ công bố và hồ sơ đóng giao dịch bằng tiếng Việt hoặc tiếng Anh.`,
-      nearH2: 'Các thành phố lân cận tôi phục vụ',
+      nearH2: 'Các thành phố khác tôi phục vụ ở San Gabriel Valley',
       allAreas: 'Tất cả khu vực phục vụ',
       faqH2: `Câu hỏi thường gặp về vay mua nhà ở ${n}`,
       faq: [
@@ -97,7 +97,7 @@ export function cityCopy(c: City, lang: Lang) {
     buyP2: "Because I'm both your loan officer and a realtor, the pre-approval, the home search and the offer are handled by the same person.",
     langH2: 'Service in English and Vietnamese',
     langP: `${c.otherLanguage}% of ${n} residents speak a language other than English at home.${c.vietnamese ? ` About ${num(c.vietnamese.people)} residents (${c.vietnamese.pct}%) are Vietnamese American.` : ''} I explain every loan option, disclosure and closing document in English or Tiếng Việt.`,
-    nearH2: 'Nearby cities I serve',
+    nearH2: 'Other San Gabriel Valley cities I serve',
     allAreas: 'All areas I serve',
     faqH2: `${n} mortgage FAQ`,
     faq: [

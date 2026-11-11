@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HomeView, { type HomeContent } from '../../components/HomeView.astro';
 import { agent } from '../../config/site';
+import { faqLd } from '../../lib/seo';
 
 const title = 'Môi giới vay mua nhà San Gabriel Valley | Bao Nguyen';
 const description =
@@ -23,8 +24,16 @@ const c: HomeContent = {
   ],
   citiesH2: 'Các thành phố tôi phục vụ',
   citiesIntro: 'Tôi làm việc khắp San Gabriel Valley, từ văn phòng ở West Covina. Những thành phố được hỏi đến nhiều nhất:',
+  allAreas: 'Tất cả khu vực',
+  faqH2: 'Câu hỏi thường gặp',
+  faq: [
+    ['Bạn chỉ giúp về khoản vay, hay cả mua bán nhà?', 'Cả hai. Bao là chuyên viên cho vay có giấy phép kiêm môi giới địa ốc, nên có thể lo khoản vay và đại diện cho bạn khi mua hoặc bán nhà.'],
+    ['Bạn có nói tiếng Việt không?', 'Có. Bao làm việc bằng tiếng Việt và tiếng Anh, từ cuộc gọi đầu tiên cho đến ngày ký giấy tờ.'],
+    ['Bạn phục vụ những khu vực nào?', 'Toàn bộ San Gabriel Valley, gồm Alhambra, Monterey Park, San Gabriel, Rosemead, Temple City, El Monte, Arcadia và West Covina, cùng các nơi khác trong Quận Los Angeles.'],
+    ['Nói chuyện với bạn có mất phí không?', 'Không. Cuộc tư vấn đầu tiên miễn phí, và bạn sẽ nhận Bản Ước tính Khoản vay (Loan Estimate) ghi rõ mọi chi phí trước khi quyết định.'],
+  ],
 };
 ---
-<BaseLayout title={title} description={description} path="/vi/" lang="vi" crumbs={[{ name: 'Trang chủ', path: '/vi/' }]}>
+<BaseLayout title={title} description={description} path="/vi/" lang="vi" crumbs={[{ name: 'Trang chủ', path: '/vi/' }]} schema={[faqLd(c.faq, 'vi')]}>
   <HomeView c={c} lang="vi" />
 </BaseLayout>

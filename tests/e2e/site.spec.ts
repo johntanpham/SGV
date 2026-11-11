@@ -120,3 +120,25 @@ test('language switch links each page to its twin, with hreflang tags', async ({
   await expect(page.locator('header a.lang-switch')).toHaveAttribute('href', '/');
   await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute('href', 'https://sangabrielvalleymortgagebroker.com/');
 });
+
+test('every city page links to every other city page', async ({ page }) => {
+  const cityPaths = pages.filter((p) => /^\/(vi\/)?areas\/[a-z-]+\/$/.test(p));
+  for (const path of cityPaths) {
+    await page.goto(path);
+    const prefix = path.startsWith('/vi/') ? '/vi/areas/' : '/areas/';
+    const siblings = cityPaths.filter((p) => p !== path && p.startsWith(prefix));
+    const hrefs = await page.locator('main a').evaluateAll((as) => as.map((a) => a.getAttribute('href')));
+    for (const s of siblings) expect(hrefs, `${path} should link to ${s}`).toContain(s);
+  }
+});
+
+test('FAQ sections carry FAQPage structured data', async ({ page }) => {
+  for (const path of ['/', '/vi/', '/areas/', '/areas/rosemead/', '/vi/areas/rosemead/']) {
+    await page.goto(path);
+    const ld = JSON.parse((await page.locator('script[type="application/ld+json"]').textContent()) || '{}');
+    const faq = ld['@graph'].find((n: { '@type': string }) => n['@type'] === 'FAQPage');
+    expect(faq, path).toBeTruthy();
+    expect(faq.mainEntity.length).toBeGreaterThanOrEqual(3);
+    await expect(page.locator('section.faq h3')).toHaveCount(faq.mainEntity.length);
+  }
+});
