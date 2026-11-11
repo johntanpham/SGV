@@ -1,0 +1,170 @@
+---
+import { agent, brokerage, formatPhone, telHref } from '../config/site';
+import { t, type Lang } from '../i18n/strings';
+
+export interface HomeContent {
+  eyebrow: string;
+  h1: string;
+  lead: string;
+  cardLabel: string;
+  photoAlt: string;
+  langs: string;
+  helpH2: string;
+  helps: { h: string; p: string }[];
+  citiesH2: string;
+  citiesIntro: string;
+}
+interface Props {
+  c: HomeContent;
+  lang: Lang;
+}
+const { c, lang } = Astro.props;
+const tr = t(lang);
+const cities = ['Alhambra', 'Monterey Park', 'San Gabriel', 'Rosemead', 'Temple City', 'El Monte', 'Arcadia', 'West Covina'];
+---
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">{c.eyebrow}</p>
+        <h1>{c.h1}</h1>
+        <p class="lead">{c.lead}</p>
+        <div class="ctas">
+          <a class="btn btn-primary" href={telHref(agent.phone)}>{tr.call} {formatPhone(agent.phone)}</a>
+          <a class="btn btn-ghost" href={`sms:+1${agent.phone}`}>{tr.text}</a>
+        </div>
+      </div>
+      <aside class="card agent-card" aria-label={c.cardLabel}>
+        <picture>
+          <source srcset="/images/bao-nguyen.webp" type="image/webp" />
+          <img
+            src={agent.photo}
+            width="140"
+            height="133"
+            alt={c.photoAlt}
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div>
+          <p class="agent-name">{agent.name}</p>
+          <p class="agent-meta">{agent.title}, {brokerage.name}</p>
+          <ul class="licenses">
+            <li>CA DRE #{agent.dreLicense}</li>
+            <li>NMLS #{agent.nmlsId}</li>
+            <li>{c.langs}</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>{c.helpH2}</h2>
+    <ul class="help-grid">
+      {c.helps.map((x) => (
+        <li class="card">
+          <h3>{x.h}</h3>
+          <p>{x.p}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2>{c.citiesH2}</h2>
+    <p>{c.citiesIntro}</p>
+    <ul class="city-list">
+      {cities.map((c) => <li>{c}</li>)}
+    </ul>
+  </section>
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--white) 0%, var(--sand-50) 100%);
+    padding-block: clamp(2rem, 6vw, 4rem);
+  }
+  .hero-grid {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 1.5fr 1fr;
+    }
+  }
+  .lead {
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+    max-width: 40rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .agent-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  .agent-card img {
+    width: 140px;
+    height: auto;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .agent-name {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--jade-900);
+    margin: 0;
+  }
+  .agent-meta {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+    margin: 0 0 0.5rem;
+  }
+  .licenses {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  @media (max-width: 420px) {
+    .agent-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  .help-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .help-grid h3 {
+    margin-top: 0;
+  }
+  .help-grid p {
+    margin: 0;
+  }
+  .city-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  .city-list li {
+    background: var(--jade-100);
+    color: var(--jade-900);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-weight: 600;
+  }
+</style>

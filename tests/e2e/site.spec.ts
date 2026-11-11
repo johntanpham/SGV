@@ -66,9 +66,10 @@ for (const path of pages) {
       const focused = await page.evaluate(() => {
         const el = document.activeElement as HTMLElement;
         const s = getComputedStyle(el);
-        return { text: el.textContent?.trim(), outline: s.outlineStyle, top: el.getBoundingClientRect().top };
+        return { isSkip: el.classList.contains('skip-link'), text: el.textContent?.trim(), lang: document.documentElement.lang, outline: s.outlineStyle, top: el.getBoundingClientRect().top };
       });
-      expect(focused.text).toBe('Skip to content');
+      expect(focused.isSkip).toBe(true);
+      expect(focused.text).toBe(focused.lang === 'vi' ? 'Chuyển đến nội dung' : 'Skip to content');
       expect(focused.outline).not.toBe('none');
       expect(focused.top).toBeGreaterThanOrEqual(0);
     });
@@ -103,4 +104,19 @@ test('security headers are sent, and preview builds send X-Robots-Tag: noindex',
   expect(h['x-frame-options']).toBe('DENY');
   if (process.env.SITE_MODE !== 'production') expect(h['x-robots-tag']).toBe('noindex');
   else expect(h['x-robots-tag']).toBeUndefined();
+});
+
+test('language switch links each page to its twin, with hreflang tags', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  const toVi = page.locator('header a.lang-switch');
+  await expect(toVi).toHaveAttribute('href', '/vi/');
+  await expect(page.locator('link[hreflang="vi"]')).toHaveAttribute('href', 'https://sangabrielvalleymortgagebroker.com/vi/');
+  await toVi.click();
+  await expect(page).toHaveURL(/\/vi\/$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'vi');
+  await expect(page.locator('h1')).toContainText('Môi giới vay');
+  await expect(page.locator('footer')).toContainText('Khoản vay thế chấp được thực hiện qua');
+  await expect(page.locator('header a.lang-switch')).toHaveAttribute('href', '/');
+  await expect(page.locator('link[hreflang="x-default"]')).toHaveAttribute('href', 'https://sangabrielvalleymortgagebroker.com/');
 });

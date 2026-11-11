@@ -1,12 +1,14 @@
 ---
 import type { Crumb } from '../lib/seo';
+import { t, type Lang } from '../i18n/strings';
 interface Props {
   crumbs: Crumb[];
+  lang?: Lang;
 }
-const { crumbs } = Astro.props;
+const { crumbs, lang = 'en' } = Astro.props;
 ---
 {crumbs.length > 1 && (
-  <nav aria-label="Breadcrumb" class="crumbs wrap">
+  <nav aria-label={t(lang).breadcrumb} class="crumbs wrap">
     <ol>
       {crumbs.map((c, i) => (
         <li>

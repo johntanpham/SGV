@@ -8,12 +8,14 @@ import { agent, formatPhone, telHref } from '../config/site';
   path="/404/"
   crumbs={[{ name: 'Home', path: '/' }, { name: 'Page not found', path: '/404/' }]}
   indexable={false}
+  alternate={false}
 >
   <section class="wrap nf">
     <h1>We couldn't find that page</h1>
     <p>The link may be old, or the address may have a typo. These will get you where you need to go:</p>
     <ul>
       <li><a href="/">Home page</a></li>
+      <li><a href="/vi/" lang="vi" hreflang="vi">Trang chủ tiếng Việt</a></li>
       <li><a href={telHref(agent.phone)}>Call {agent.name} at {formatPhone(agent.phone)}</a></li>
     </ul>
   </section>

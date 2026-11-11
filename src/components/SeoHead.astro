@@ -2,6 +2,7 @@
 import { site } from '../config/site';
 import { canonicalUrl, graph, websiteLd, organizationLd, agentLd, mortgageCompanyLd, breadcrumbLd, type Crumb } from '../lib/seo';
 import { isPreview } from '../lib/mode';
+import type { Lang } from '../i18n/strings';
 
 interface Props {
   title: string;
@@ -14,7 +15,9 @@ interface Props {
   schema?: object[];
   ogImage?: string;
   ogType?: 'website' | 'article';
-  lang?: string;
+  lang?: Lang;
+  /** Path of the other-language twin, for hreflang. */
+  twin?: string | null;
 }
 
 const {
@@ -26,7 +29,11 @@ const {
   schema = [],
   ogImage = '/og/default.png',
   ogType = 'website',
+  lang = 'en',
+  twin = null,
 } = Astro.props;
+const enHref = twin ? canonicalUrl(lang === 'en' ? path : twin) : null;
+const viHref = twin ? canonicalUrl(lang === 'vi' ? path : twin) : null;
 
 const canonical = canonicalUrl(path);
 const hidden = isPreview();
@@ -46,7 +53,10 @@ const ld = graph([websiteLd(), organizationLd(), mortgageCompanyLd(), agentLd(),
 <meta property="og:image" content={ogUrl} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:locale" content="en_US" />
+<meta property="og:locale" content={lang === 'vi' ? 'vi_VN' : 'en_US'} />
+{twin && <link rel="alternate" hreflang="en" href={enHref} />}
+{twin && <link rel="alternate" hreflang="vi" href={viHref} />}
+{twin && <link rel="alternate" hreflang="x-default" href={enHref} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />

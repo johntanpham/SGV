@@ -1,16 +1,24 @@
 ---
 import { site, agent, nav, formatPhone, telHref } from '../config/site';
-const items = nav.filter((n) => n.ready);
+import { t, viPath, type Lang } from '../i18n/strings';
+interface Props {
+  lang?: Lang;
+  twin?: string | null;
+}
+const { lang = 'en', twin = null } = Astro.props;
+const tr = t(lang);
+const other: Lang = lang === 'en' ? 'vi' : 'en';
+const items = nav.filter((n) => n.ready).map((n) => ({ ...n, href: lang === 'vi' ? viPath(n.href) : n.href }));
 const current = Astro.url.pathname;
 ---
 <header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/">
+    <a class="brand" href={lang === 'vi' ? '/vi/' : '/'}>
       <span class="brand-name">{site.name}</span>
       <span class="brand-sub">{agent.name} · {agent.title}</span>
     </a>
     {items.length > 0 && (
-      <nav aria-label="Main">
+      <nav aria-label={tr.mainNav}>
         <ul>
           {items.map((i) => (
             <li>
@@ -20,10 +28,18 @@ const current = Astro.url.pathname;
         </ul>
       </nav>
     )}
+    <div class="actions">
+    {twin && (
+      <a class="lang-switch" href={twin} hreflang={other} lang={other} aria-label={tr.switchAria}>
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-width="2" d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm-9 9h18M12 3c2.5 2.5 3.8 5.5 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.5-3.8-9S9.5 5.5 12 3Z"/></svg>
+        <span>{tr.switchLabel}</span>
+      </a>
+    )}
     <a class="btn btn-primary call" href={telHref(agent.phone)}>
       <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path fill="currentColor" d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.6a1 1 0 0 1-.25 1l-2.2 2.2Z"/></svg>
-      <span>Call {formatPhone(agent.phone)}</span>
+      <span>{tr.call} {formatPhone(agent.phone)}</span>
     </a>
+    </div>
   </div>
 </header>
 
@@ -81,14 +97,38 @@ const current = Astro.url.pathname;
     background: var(--jade-100);
     color: var(--jade-900);
   }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .lang-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 44px;
+    padding: 0 0.9rem;
+    border: 2px solid var(--jade-800);
+    border-radius: 999px;
+    color: var(--jade-800);
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .lang-switch:hover {
+    background: var(--jade-100);
+  }
   .call {
     min-height: 44px;
     padding: 0.5rem 1rem;
     font-size: 0.9375rem;
   }
   @media (max-width: 480px) {
-    .call {
+    .actions {
       width: 100%;
+    }
+    .call {
+      flex: 1;
     }
   }
 </style>
