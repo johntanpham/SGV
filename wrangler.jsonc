@@ -1,0 +1,17 @@
+{
+  // Production worker. The custom domain route is added at launch (see LAUNCH.md).
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sgvmb",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page",
+    "html_handling": "force-trailing-slash"
+  },
+  "env": {
+    // Hidden preview worker on workers.dev. Never serves the real domain.
+    "preview": {
+      "name": "sgvmb-preview"
+    }
+  }
+}

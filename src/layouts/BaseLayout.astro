@@ -1,0 +1,44 @@
+---
+import '../styles/global.css';
+import SeoHead from '../components/SeoHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Analytics from '../components/Analytics.astro';
+import type { Crumb } from '../lib/seo';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  crumbs: Crumb[];
+  indexable?: boolean;
+  schema?: object[];
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  lang?: 'en' | 'vi';
+}
+const { lang = 'en', indexable = true, crumbs, ...rest } = Astro.props;
+---
+<!doctype html>
+<html lang={lang} data-indexable={indexable ? 'true' : 'false'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preload" href="/fonts/public-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/fraunces-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#0b3a35" />
+    <SeoHead {...rest} crumbs={crumbs} indexable={indexable} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <Breadcrumbs crumbs={crumbs} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Analytics />
+  </body>
+</html>

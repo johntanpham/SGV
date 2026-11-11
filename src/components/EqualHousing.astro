@@ -1,0 +1,33 @@
+---
+/** Equal Housing Opportunity logo (house with equal sign) plus the required words. */
+interface Props {
+  tone?: 'light' | 'dark';
+}
+const { tone = 'light' } = Astro.props;
+---
+<span class={`eho eho-${tone}`}>
+  <svg viewBox="0 0 40 40" width="32" height="32" aria-hidden="true" focusable="false">
+    <path d="M20 3 2 17h5v20h26V17h5L20 3Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round" />
+    <rect x="12" y="19" width="16" height="3.5" fill="currentColor" />
+    <rect x="12" y="26" width="16" height="3.5" fill="currentColor" />
+  </svg>
+  <span>Equal Housing Opportunity</span>
+</span>
+
+<style>
+  .eho {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .eho-light {
+    color: var(--white);
+  }
+  .eho-dark {
+    color: var(--ink);
+  }
+</style>

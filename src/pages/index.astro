@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { agent, brokerage, formatPhone, telHref } from '../config/site';
+import { buildTitle } from '../lib/seo';
+
+const title = buildTitle('San Gabriel Valley Mortgage Broker | Bao Nguyen', { brand: false });
+const description =
+  'Refinance, take cash out, or buy a home in the San Gabriel Valley with Bao Nguyen, a licensed mortgage broker and realtor. English and Vietnamese.';
+
+const helps = [
+  { h: 'Refinance', p: 'Replace your current loan to change the rate, the term, or the monthly payment.' },
+  { h: 'Take cash out', p: 'Turn home equity into cash with a cash-out refinance or a home equity line.' },
+  { h: 'Buy a home', p: 'Get pre-approved, then search for the home with the same person who arranges the loan.' },
+  { h: 'Sell a home', p: 'Price, list and sell, with financing advice for your next move already in place.' },
+];
+
+const cities = ['Alhambra', 'Monterey Park', 'San Gabriel', 'Rosemead', 'Temple City', 'El Monte', 'Arcadia', 'West Covina'];
+---
+<BaseLayout title={title} description={description} path="/" crumbs={[{ name: 'Home', path: '/' }]}>
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Mortgage broker &amp; realtor · San Gabriel Valley</p>
+        <h1>San Gabriel Valley mortgage broker who also helps you buy and sell</h1>
+        <p class="lead">
+          {agent.name} helps families in Alhambra, Monterey Park, San Gabriel, Rosemead, Temple City and the rest of the
+          San Gabriel Valley refinance, take cash out, and buy or sell a home. One licensed person handles the loan and
+          the home search, in English or Vietnamese.
+        </p>
+        <div class="ctas">
+          <a class="btn btn-primary" href={telHref(agent.phone)}>Call {formatPhone(agent.phone)}</a>
+          <a class="btn btn-ghost" href={`sms:+1${agent.phone}`}>Send a text</a>
+        </div>
+      </div>
+      <aside class="card agent-card" aria-label="About your loan officer">
+        <picture>
+          <source srcset="/images/bao-nguyen.webp" type="image/webp" />
+          <img
+            src={agent.photo}
+            width="140"
+            height="133"
+            alt="Bao Nguyen, mortgage broker and realtor"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div>
+          <p class="agent-name">{agent.name}</p>
+          <p class="agent-meta">{agent.title}, {brokerage.name}</p>
+          <ul class="licenses">
+            <li>CA DRE #{agent.dreLicense}</li>
+            <li>NMLS #{agent.nmlsId}</li>
+            <li>English · Tiếng Việt</li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="wrap">
+    <h2>What I can help you with</h2>
+    <ul class="help-grid">
+      {helps.map((x) => (
+        <li class="card">
+          <h3>{x.h}</h3>
+          <p>{x.p}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="wrap">
+    <h2>Cities I serve</h2>
+    <p>
+      I work across the San Gabriel Valley, from the office in West Covina. The cities I'm asked about most:
+    </p>
+    <ul class="city-list">
+      {cities.map((c) => <li>{c}</li>)}
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    background: linear-gradient(180deg, var(--white) 0%, var(--sand-50) 100%);
+    padding-block: clamp(2rem, 6vw, 4rem);
+  }
+  .hero-grid {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 860px) {
+    .hero-grid {
+      grid-template-columns: 1.5fr 1fr;
+    }
+  }
+  .lead {
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+    max-width: 40rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+  .agent-card {
+    display: flex;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  .agent-card img {
+    width: 140px;
+    height: auto;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .agent-name {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--jade-900);
+    margin: 0;
+  }
+  .agent-meta {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+    margin: 0 0 0.5rem;
+  }
+  .licenses {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+  @media (max-width: 420px) {
+    .agent-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  .help-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .help-grid h3 {
+    margin-top: 0;
+  }
+  .help-grid p {
+    margin: 0;
+  }
+  .city-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  .city-list li {
+    background: var(--jade-100);
+    color: var(--jade-900);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-weight: 600;
+  }
+</style>

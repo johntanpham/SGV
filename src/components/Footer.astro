@@ -1,0 +1,121 @@
+---
+import { site, agent, brokerage, verifyLinks, nav, formatPhone, telHref } from '../config/site';
+import EqualHousing from './EqualHousing.astro';
+const items = nav.filter((n) => n.ready);
+const year = new Date().getFullYear();
+const a = brokerage.address;
+---
+<footer class="site-footer">
+  <div class="wrap grid">
+    <div>
+      <p class="f-brand">{site.name}</p>
+      <p>
+        {agent.name}, {agent.title}<br />
+        <a href={telHref(agent.phone)}>{formatPhone(agent.phone)}</a><br />
+        <a href={`mailto:${agent.email}`}>{agent.email}</a><br />
+        English &amp; Tiếng Việt
+      </p>
+    </div>
+    <div>
+      <p class="f-head">Office</p>
+      <address>
+        {brokerage.name}<br />
+        {a.street}<br />
+        {a.city}, {a.region} {a.postalCode}
+      </address>
+    </div>
+    {items.length > 0 && (
+      <nav aria-label="Footer">
+        <p class="f-head">Site</p>
+        <ul>
+          {items.map((i) => (
+            <li><a href={i.href}>{i.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    )}
+  </div>
+
+  <div class="wrap disclosures" id="licenses">
+    <p>
+      <strong>{agent.name}</strong>, {agent.title} · CA DRE #{agent.dreLicense} · NMLS #{agent.nmlsId}
+      · <a href={verifyLinks.nmls} rel="noopener" target="_blank">Verify on NMLS Consumer Access<span class="visually-hidden"> (opens in a new tab)</span></a>
+    </p>
+    <p>
+      <strong>{brokerage.name}</strong> · {brokerage.regulator} · DRE #{brokerage.dreLicense}
+      {brokerage.nmlsId ? <> · Company NMLS #{brokerage.nmlsId}</> : null}
+    </p>
+    <p>
+      This website is for information only and is not an offer to lend or a commitment to make a loan. All loans are
+      subject to credit approval, property review and program guidelines. Rates, terms and programs change without notice.
+    </p>
+    <div class="bottom">
+      <EqualHousing tone="light" />
+      <p class="copy">© {year} {brokerage.name}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--jade-900);
+    color: #e9f2ef;
+    margin-top: 4rem;
+    padding-block: 2.5rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+  .site-footer a {
+    color: #ffffff;
+  }
+  .grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  }
+  .f-brand {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+  .f-head {
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+  }
+  address {
+    font-style: normal;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+  .disclosures {
+    border-top: 1px solid rgb(255 255 255 / 0.2);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+  .disclosures a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+  .bottom {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .copy {
+    margin: 0;
+  }
+</style>

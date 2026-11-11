@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { agent, formatPhone, telHref } from '../config/site';
+---
+<BaseLayout
+  title="Page not found | SGV Mortgage Broker"
+  description="This page doesn't exist or has moved. Go to the home page, or call Bao Nguyen for help with a refinance, cash-out or home purchase in the San Gabriel Valley."
+  path="/404/"
+  crumbs={[{ name: 'Home', path: '/' }, { name: 'Page not found', path: '/404/' }]}
+  indexable={false}
+>
+  <section class="wrap nf">
+    <h1>We couldn't find that page</h1>
+    <p>The link may be old, or the address may have a typo. These will get you where you need to go:</p>
+    <ul>
+      <li><a href="/">Home page</a></li>
+      <li><a href={telHref(agent.phone)}>Call {agent.name} at {formatPhone(agent.phone)}</a></li>
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    padding-block: 3rem;
+  }
+  .nf li a {
+    display: inline-block;
+    padding-block: 0.6rem;
+  }
+</style>

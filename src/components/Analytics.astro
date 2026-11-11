@@ -1,0 +1,35 @@
+---
+/**
+ * GA4: only in production builds, only when an ID is set, only on the live domain
+ * (checked again in the browser), loaded after the page finishes loading.
+ * Consent mode: ad features always off; analytics cookies off by default in the
+ * EEA, UK and Switzerland (no consent banner yet).
+ */
+import { site } from '../config/site';
+import { getMode } from '../lib/mode';
+const enabled = getMode() === 'production' && site.ga4Id !== '';
+const cfg = JSON.stringify({ id: site.ga4Id, host: site.domain });
+---
+{enabled && (
+  <script is:inline define:vars={{ cfg }}>
+    (function () {
+      var c = JSON.parse(cfg);
+      if (location.hostname !== c.host) return;
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      window.gtag = gtag;
+      var eea = ['AT','BE','BG','HR','CY','CZ','DK','EE','FI','FR','DE','GR','HU','IS','IE','IT','LV','LI','LT','LU','MT','NL','NO','PL','PT','RO','SK','SI','ES','SE','GB','CH'];
+      gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied', region: eea });
+      gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'granted' });
+      gtag('set', 'ads_data_redaction', true);
+      gtag('js', new Date());
+      gtag('config', c.id, { allow_google_signals: false, allow_ad_personalization_signals: false });
+      window.addEventListener('load', function () {
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=' + c.id;
+        document.head.appendChild(s);
+      });
+    })();
+  </script>
+)}
