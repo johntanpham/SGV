@@ -2,6 +2,7 @@
   // Production worker. The custom domain route is added at launch (see LAUNCH.md).
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "sgvmb",
+  "account_id": "97a61ea3940bdb09bb7cde99b1a28a91",
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": "./dist",
