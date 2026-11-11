@@ -1,6 +1,7 @@
 ---
 import { agent, brokerage, formatPhone, telHref } from '../config/site';
-import { t, type Lang } from '../i18n/strings';
+import { t, viPath, type Lang } from '../i18n/strings';
+import { cities } from '../data/cities';
 
 export interface HomeContent {
   eyebrow: string;
@@ -20,7 +21,7 @@ interface Props {
 }
 const { c, lang } = Astro.props;
 const tr = t(lang);
-const cities = ['Alhambra', 'Monterey Park', 'San Gabriel', 'Rosemead', 'Temple City', 'El Monte', 'Arcadia', 'West Covina'];
+const cityHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : `/areas/${slug}/`);
 ---
   <section class="hero">
     <div class="wrap hero-grid">
@@ -74,7 +75,7 @@ const cities = ['Alhambra', 'Monterey Park', 'San Gabriel', 'Rosemead', 'Temple 
     <h2>{c.citiesH2}</h2>
     <p>{c.citiesIntro}</p>
     <ul class="city-list">
-      {cities.map((c) => <li>{c}</li>)}
+      {cities.map((c) => <li><a href={cityHref(c.slug)}>{c.name}</a></li>)}
     </ul>
   </section>
 <style>
@@ -160,11 +161,18 @@ const cities = ['Alhambra', 'Monterey Park', 'San Gabriel', 'Rosemead', 'Temple 
     list-style: none;
     padding: 0;
   }
-  .city-list li {
+  .city-list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     background: var(--jade-100);
     color: var(--jade-900);
     border-radius: 999px;
-    padding: 0.35rem 0.9rem;
+    padding: 0 1rem;
     font-weight: 600;
+    text-decoration: none;
+  }
+  .city-list a:hover {
+    background: var(--sand-200);
   }
 </style>

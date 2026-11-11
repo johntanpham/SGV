@@ -8,7 +8,7 @@ interface Props {
 }
 const { lang = 'en' } = Astro.props;
 const tr = t(lang);
-const items = nav.filter((n) => n.ready).map((n) => ({ ...n, href: lang === 'vi' ? viPath(n.href) : n.href }));
+const items = nav.filter((n) => n.ready).map((n) => ({ ...n, label: lang === 'vi' ? n.labelVi : n.label, href: lang === 'vi' ? viPath(n.href) : n.href }));
 const year = new Date().getFullYear();
 const a = brokerage.address;
 ---
@@ -102,8 +102,9 @@ const a = brokerage.address;
     margin: 0;
   }
   li a {
-    display: inline-block;
-    padding-block: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
   }
   .disclosures {
     border-top: 1px solid rgb(255 255 255 / 0.2);
@@ -113,8 +114,9 @@ const a = brokerage.address;
     line-height: 1.6;
   }
   .disclosures a {
-    display: inline-block;
-    padding-block: 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
   }
   .bottom {
     display: flex;

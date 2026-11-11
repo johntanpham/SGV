@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cityCopy } from '../i18n/city-copy';
+import { citiesBySlug, CENSUS_SOURCE, VIET_SOURCE, type City } from '../data/cities';
+import { loanLimits, hop } from '../data/loan-limits';
+import { agent, formatPhone, telHref } from '../config/site';
+import { t, viPath, type Lang } from '../i18n/strings';
+import { ids, canonicalUrl } from '../lib/seo';
+
+interface Props {
+  city: City;
+  lang: Lang;
+}
+const { city, lang } = Astro.props;
+const c = cityCopy(city, lang);
+const tr = t(lang);
+const p = (path: string) => (lang === 'vi' ? viPath(path) : path);
+const path = p(`/areas/${city.slug}/`);
+const crumbs = [
+  { name: tr.home, path: p('/') },
+  { name: c.crumbAreas, path: p('/areas/') },
+  { name: city.name, path },
+];
+const neighbors = city.neighbors.map((s) => citiesBySlug[s]).filter(Boolean);
+const schema = [
+  {
+    '@type': 'Service',
+    '@id': `${canonicalUrl(path)}#service`,
+    name: c.h1,
+    serviceType: 'Mortgage broker',
+    provider: { '@id': ids.agent },
+    areaServed: {
+      '@type': 'City',
+      name: `${city.name}, California`,
+      containedInPlace: { '@type': 'AdministrativeArea', name: 'Los Angeles County, California' },
+    },
+    availableLanguage: ['en', 'vi'],
+    inLanguage: lang,
+  },
+];
+---
+<BaseLayout title={c.title} description={c.description} path={path} crumbs={crumbs} lang={lang} indexable={city.indexable} schema={schema}>
+  <article class="wrap city">
+    <h1>{c.h1}</h1>
+    <p class="lead">{c.lead}</p>
+    <p>{c.intro}</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href={telHref(agent.phone)}>{tr.call} {formatPhone(agent.phone)}</a>
+      <a class="btn btn-ghost" href={`sms:+1${agent.phone}`}>{tr.text}</a>
+    </div>
+
+    <section aria-labelledby="facts">
+      <h2 id="facts">{c.factsH2}</h2>
+      <dl class="facts card">
+        {c.facts.map(([k, v]) => (
+          <div>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="source">
+        {c.source}: <a href={CENSUS_SOURCE.url} rel="noopener">{CENSUS_SOURCE.name}</a>
+        {city.vietnamese && <>; <a href={VIET_SOURCE.url} rel="noopener">{VIET_SOURCE.name}</a></>}.
+      </p>
+    </section>
+
+    <section aria-labelledby="limits">
+      <h2 id="limits">{c.limitsH2}</h2>
+      <p>{c.limitsP}</p>
+      <p>{c.limitsImplication}</p>
+      <p class="source">
+        {c.source}: <a href={loanLimits.sources.conforming.url} rel="noopener">{loanLimits.sources.conforming.name}</a>;
+        <a href={loanLimits.sources.fha.url} rel="noopener">{loanLimits.sources.fha.name}</a>.
+      </p>
+    </section>
+
+    <section aria-labelledby="refi">
+      <h2 id="refi">{c.refiH2}</h2>
+      <p>{c.refiP1}</p>
+      <p>{c.refiP2}</p>
+    </section>
+
+    <section aria-labelledby="buy">
+      <h2 id="buy">{c.buyH2}</h2>
+      <p>{c.buyP1}</p>
+      <p>{c.buyP2}</p>
+      <p class="source">{c.source}: <a href={hop.source.url} rel="noopener">{hop.source.name}</a>.</p>
+    </section>
+
+    <section aria-labelledby="lang">
+      <h2 id="lang">{c.langH2}</h2>
+      <p>{c.langP}</p>
+    </section>
+
+    <section aria-labelledby="faq">
+      <h2 id="faq">{c.faqH2}</h2>
+      {c.faq.map(([q, a]) => (
+        <div class="qa">
+          <h3>{q}</h3>
+          <p>{a}</p>
+        </div>
+      ))}
+    </section>
+
+    <section aria-labelledby="near">
+      <h2 id="near">{c.nearH2}</h2>
+      <ul class="near">
+        {neighbors.map((nb) => <li><a href={p(`/areas/${nb.slug}/`)}>{nb.name}</a></li>)}
+        <li><a href={p('/areas/')}>{c.allAreas}</a></li>
+      </ul>
+    </section>
+
+    <aside class="card cta" aria-labelledby="cta">
+      <h2 id="cta">{c.ctaH2}</h2>
+      <p>{c.ctaP}</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href={telHref(agent.phone)}>{tr.call} {formatPhone(agent.phone)}</a>
+        <a class="btn btn-ghost" href={`sms:+1${agent.phone}`}>{tr.text}</a>
+      </div>
+    </aside>
+  </article>
+</BaseLayout>
+
+<style>
+  .city {
+    max-width: 52rem;
+    padding-block: 1.5rem 0;
+  }
+  .lead {
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin: 1.25rem 0;
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 0 0 0.5rem;
+  }
+  .facts dt {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+  .facts dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    font-weight: 700;
+    color: var(--jade-900);
+  }
+  .source {
+    line-height: 1.9;
+  }
+  .qa h3 {
+    font-size: 1.125rem;
+  }
+  .near {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+  }
+  .near a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 1rem;
+    border-radius: 999px;
+    background: var(--jade-100);
+    color: var(--jade-900);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .cta {
+    margin-top: 2.5rem;
+  }
+  .cta h2 {
+    margin-top: 0;
+  }
+</style>

@@ -8,7 +8,7 @@ interface Props {
 const { lang = 'en', twin = null } = Astro.props;
 const tr = t(lang);
 const other: Lang = lang === 'en' ? 'vi' : 'en';
-const items = nav.filter((n) => n.ready).map((n) => ({ ...n, href: lang === 'vi' ? viPath(n.href) : n.href }));
+const items = nav.filter((n) => n.ready).map((n) => ({ ...n, label: lang === 'vi' ? n.labelVi : n.label, href: lang === 'vi' ? viPath(n.href) : n.href }));
 const current = Astro.url.pathname;
 ---
 <header class="site-header">
@@ -85,7 +85,7 @@ const current = Astro.url.pathname;
   nav a {
     display: inline-flex;
     align-items: center;
-    min-height: 44px;
+    min-height: 48px;
     padding: 0 0.75rem;
     color: var(--ink);
     text-decoration: none;

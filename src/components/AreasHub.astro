@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { cities, CENSUS_SOURCE } from '../data/cities';
+import { cityFacts, usd } from '../i18n/city-copy';
+import { loanLimits, hop } from '../data/loan-limits';
+import { t, viPath, type Lang } from '../i18n/strings';
+
+interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const tr = t(lang);
+const vi = lang === 'vi';
+const p = (path: string) => (vi ? viPath(path) : path);
+const path = p('/areas/');
+const copy = vi
+  ? {
+      title: 'Khu vực phục vụ: Môi giới vay mua nhà San Gabriel Valley',
+      description: 'Bao Nguyen phục vụ Alhambra, Monterey Park, San Gabriel, Rosemead, Temple City, El Monte, Arcadia, West Covina. Giá nhà và hạn mức vay từng thành phố.',
+      crumb: 'Khu vực phục vụ',
+      h1: 'Môi giới vay mua nhà khắp San Gabriel Valley',
+      lead: `Tôi giúp cư dân San Gabriel Valley tái tài trợ, rút tiền mặt từ nhà và mua bán nhà, bằng tiếng Việt hoặc tiếng Anh. Mọi thành phố dưới đây thuộc Quận Los Angeles, nên hạn mức vay conforming năm ${loanLimits.year} là ${usd(loanLimits.conforming.oneUnit)} cho nhà một căn. Chọn thành phố của bạn để xem giá nhà, tỷ lệ chủ sở hữu và các chương trình hỗ trợ tiền trả trước áp dụng tại đó.`,
+      value: 'Giá trị nhà trung vị',
+      owners: 'Nhà do chủ ở',
+      hopYes: 'Có chương trình HOP của quận',
+      hopNo: 'Không thuộc chương trình HOP của quận',
+      more: 'Không thấy thành phố của bạn? Tôi phục vụ toàn bộ San Gabriel Valley và cả Quận Los Angeles. Hãy gọi hoặc nhắn tin.',
+      source: 'Nguồn',
+    }
+  : {
+      title: 'Areas Served: San Gabriel Valley Mortgage Broker',
+      description: 'Mortgage broker Bao Nguyen serves Alhambra, Monterey Park, San Gabriel, Rosemead, Temple City, El Monte, Arcadia and West Covina. Local data by city.',
+      crumb: 'Areas',
+      h1: 'Mortgage broker serving the San Gabriel Valley',
+      lead: `I help San Gabriel Valley homeowners and buyers refinance, take cash out, and buy or sell homes, in English or Vietnamese. Every city below is in Los Angeles County, so the ${loanLimits.year} conforming loan limit is ${usd(loanLimits.conforming.oneUnit)} for a one-unit home. Pick your city to see local home values, how many homes are owner-occupied, and which down payment programs apply there.`,
+      value: 'Median home value',
+      owners: 'Owner-occupied',
+      hopYes: 'County HOP down payment help available',
+      hopNo: 'Not in the county HOP program',
+      more: "Don't see your city? I serve the whole San Gabriel Valley and all of Los Angeles County. Call or text.",
+      source: 'Source',
+    };
+const crumbs = [
+  { name: tr.home, path: p('/') },
+  { name: copy.crumb, path },
+];
+---
+<BaseLayout title={copy.title} description={copy.description} path={path} crumbs={crumbs} lang={lang}>
+  <section class="wrap hub">
+    <h1>{copy.h1}</h1>
+    <p class="lead">{copy.lead}</p>
+    <ul class="grid">
+      {cities.map((c) => {
+        const f = cityFacts(c);
+        return (
+          <li class="card">
+            <h2><a href={p(`/areas/${c.slug}/`)}>{c.name}</a></h2>
+            <p>{copy.value}: <strong>{usd(c.medianValue)}</strong></p>
+            <p>{copy.owners}: <strong>{c.ownerRate}%</strong></p>
+            <p class="hop">{f.inHop ? copy.hopYes : copy.hopNo}</p>
+          </li>
+        );
+      })}
+    </ul>
+    <p>{copy.more}</p>
+    <p class="source">
+      {copy.source}: <a href={CENSUS_SOURCE.url} rel="noopener">{CENSUS_SOURCE.name}</a>;
+      <a href={hop.source.url} rel="noopener">{hop.source.name}</a>.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .hub {
+    padding-block: 1.5rem 0;
+  }
+  .lead {
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+    max-width: 48rem;
+  }
+  .grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  }
+  .grid h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.375rem;
+  }
+  .grid h2 a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .grid p {
+    margin: 0 0 0.25rem;
+  }
+  .hop {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+  }
+  .source {
+    line-height: 1.9;
+  }
+</style>
