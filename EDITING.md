@@ -33,6 +33,7 @@ Wait about a minute, then open https://sgvmb-preview.johnphamtherealtor.workers.
 | Home page text (Vietnamese) | `src/pages/vi/index.astro` |
 | City facts (population, home values, ZIPs, intro sentence) | `src/data/cities.ts` |
 | City page wording (all cities at once) | `src/i18n/city-copy.ts` |
+| Realtor, seller's agent, buyer's agent and loan officer pages (both languages) | `src/content/services.ts` |
 | Buttons, footer and disclaimer wording (both languages) | `src/i18n/strings.ts` |
 | Loan limits, LA County program amounts | `src/data/loan-limits.ts` |
 | Bao's photo | `public/images/` → **Add file** → **Upload files** → upload a new `bao-nguyen.png` with the same name |
