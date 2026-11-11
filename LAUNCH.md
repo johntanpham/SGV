@@ -20,20 +20,20 @@ Send it to Claude. The launch command refuses to run until it's in the site.
 - **NMLS:** https://www.nmlsconsumeraccess.org → search `1317747` → confirm the California DRE licence shows "Approved" / authorized to represent Virchu.
 Tell Claude if anything differs.
 
-### ☐ 4. Create a free GitHub account (for the edit-it-yourself dashboard and to keep the code safe)
-1. Go to https://github.com/signup
-2. Enter your email, a password and a username (e.g. `johnpham-sites`). Verify the email code.
-3. Choose the **Free** plan.
-4. Tell Claude your username. Claude will then ask you to connect GitHub to Claude so it can create the repository.
+### ✅ 4. GitHub
+Code lives in the private repository https://github.com/johntanpham/SGV (Claude app installed on it).
 
-### ☐ 5. Cloudflare API token (lets Claude deploy the hidden preview)
-1. Log in at https://dash.cloudflare.com
-2. Top-right person icon → **My Profile** → **API Tokens** → **Create Token**.
-3. Next to **"Edit Cloudflare Workers"** click **Use template**.
-4. Account Resources: *Include → your account*. Zone Resources: *Include → Specific zone → sangabrielvalleymortgagebroker.com*.
-5. **Continue to summary** → **Create Token** → copy the token (shown once).
-6. Also copy your **Account ID**: left menu **Workers & Pages** → it's on the right side of the overview page.
-Send both to Claude. After launch you can delete ("Roll") the token from the same page at any time.
+### ☐ 5. Connect the repository to Cloudflare (hidden preview builds itself on every change)
+1. https://dash.cloudflare.com → left menu **Workers & Pages** → **Create** (or **Create application**).
+2. Choose **Import a repository** → **GitHub** → connect your GitHub account if asked (allow access to the **SGV** repository) → pick **johntanpham/SGV**.
+3. Fill in:
+   - **Project name:** `sgvmb-preview`
+   - **Build command:** `npm run build && node scripts/guard.mjs --target preview`
+   - **Deploy command:** `npx wrangler deploy --env preview`
+   - **Root directory:** leave blank
+4. Open **Advanced settings** → **Build variables** → add `NODE_VERSION` = `22` and `SITE_MODE` = `preview`.
+5. Click **Create and deploy**. When the build finishes, the preview link (ending in `.workers.dev`) is shown at the top. Send it to Claude.
+(The Cloudflare API token is not needed; deploys run inside Cloudflare.)
 
 ## Needed at launch (Claude will walk you through these when you say go)
 
