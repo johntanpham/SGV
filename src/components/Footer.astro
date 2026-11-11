@@ -1,5 +1,6 @@
 ---
-import { site, agent, brokerage, verifyLinks, nav, formatPhone, telHref } from '../config/site';
+import { site, agent, brokerage, mortgageCompany, requiredBeforeLaunch, verifyLinks, nav, formatPhone, telHref } from '../config/site';
+const missing = requiredBeforeLaunch.filter((r) => !r.value).map((r) => r.label);
 import EqualHousing from './EqualHousing.astro';
 const items = nav.filter((n) => n.ready);
 const year = new Date().getFullYear();
@@ -42,13 +43,17 @@ const a = brokerage.address;
       · <a href={verifyLinks.nmls} rel="noopener" target="_blank">Verify on NMLS Consumer Access<span class="visually-hidden"> (opens in a new tab)</span></a>
     </p>
     <p>
-      <strong>{brokerage.name}</strong> · {brokerage.regulator} · DRE #{brokerage.dreLicense}
-      {brokerage.nmlsId ? <> · Company NMLS #{brokerage.nmlsId}</> : null}
+      Mortgage loans arranged through <strong>{mortgageCompany.legalName}</strong>, dba {mortgageCompany.dba}
+      · NMLS #{mortgageCompany.nmlsId} · {mortgageCompany.regulator}{mortgageCompany.dreLicense ? <>, DRE #{mortgageCompany.dreLicense}</> : null}
+    </p>
+    <p>
+      Real estate services: <strong>{brokerage.name}</strong> · {brokerage.regulator} · DRE #{brokerage.dreLicense}
     </p>
     <p>
       This website is for information only and is not an offer to lend or a commitment to make a loan. All loans are
       subject to credit approval, property review and program guidelines. Rates, terms and programs change without notice.
     </p>
+    {missing.length > 0 && <span hidden data-missing-before-launch={missing.join('; ')}></span>}
     <div class="bottom">
       <EqualHousing tone="light" />
       <p class="copy">© {year} {brokerage.name}</p>

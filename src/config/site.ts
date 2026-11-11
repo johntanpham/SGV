@@ -38,16 +38,12 @@ export const agent = {
   photoHeight: 266,
 } as const;
 
+/** Real estate brokerage (Bao's DRE broker associate licence is under this broker). */
 export const brokerage = {
   name: 'Virchu Financial & Investment',
   url: 'https://virchufi.com/',
   broker: 'Jade Chu',
   dreLicense: '02075357',
-  /**
-   * Company NMLS ID. REQUIRED before launch (California mortgage advertising rules).
-   * The production build refuses to run while this is empty.
-   */
-  nmlsId: '',
   regulator: 'Real estate broker, California Department of Real Estate',
   address: {
     street: '3626 S Nogales Street',
@@ -57,6 +53,24 @@ export const brokerage = {
     country: 'US',
   },
 } as const;
+
+/**
+ * Mortgage company that sponsors Bao's MLO licence (from NMLS Consumer Access, 2026-11-10).
+ * Licensed by the California DRE as a Real Estate Corporation with an MLO endorsement.
+ */
+export const mortgageCompany = {
+  legalName: 'O.A.B.M. Inc.',
+  dba: 'Virchu Capital',
+  nmlsId: '1907086',
+  /** O.A.B.M. Inc.'s own DRE corporation licence number. REQUIRED before launch. */
+  dreLicense: '',
+  regulator: 'Licensed by the California Department of Real Estate',
+} as const;
+
+/** Values that must be filled before the production build may deploy. */
+export const requiredBeforeLaunch: { label: string; value: string }[] = [
+  { label: 'O.A.B.M. Inc. DRE licence number', value: mortgageCompany.dreLicense },
+];
 
 /** Links to official licence lookups shown in the footer. */
 export const verifyLinks = {

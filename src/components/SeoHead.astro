@@ -1,6 +1,6 @@
 ---
 import { site } from '../config/site';
-import { canonicalUrl, graph, websiteLd, organizationLd, agentLd, breadcrumbLd, type Crumb } from '../lib/seo';
+import { canonicalUrl, graph, websiteLd, organizationLd, agentLd, mortgageCompanyLd, breadcrumbLd, type Crumb } from '../lib/seo';
 import { isPreview } from '../lib/mode';
 
 interface Props {
@@ -32,7 +32,7 @@ const canonical = canonicalUrl(path);
 const hidden = isPreview();
 const robots = hidden || !indexable ? 'noindex, follow' : 'index, follow, max-image-preview:large';
 const ogUrl = new URL(ogImage, site.origin).href;
-const ld = graph([websiteLd(), organizationLd(), agentLd(), breadcrumbLd(crumbs), ...schema]);
+const ld = graph([websiteLd(), organizationLd(), mortgageCompanyLd(), agentLd(), breadcrumbLd(crumbs), ...schema]);
 ---
 <title>{title}</title>
 <meta name="description" content={description} />

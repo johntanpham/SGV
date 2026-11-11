@@ -1,4 +1,4 @@
-import { site, agent, brokerage } from '../config/site';
+import { site, agent, brokerage, mortgageCompany } from '../config/site';
 
 export const TITLE_MAX = 60;
 export const DESC_MIN = 120;
@@ -27,6 +27,7 @@ export const ids = {
   website: `${site.origin}/#website`,
   organization: `${site.origin}/#organization`,
   agent: `${site.origin}/#bao-nguyen`,
+  mortgageCompany: `${site.origin}/#mortgage-company`,
 };
 
 export function websiteLd() {
@@ -55,12 +56,7 @@ export function organizationLd() {
       postalCode: brokerage.address.postalCode,
       addressCountry: brokerage.address.country,
     },
-    identifier: [
-      { '@type': 'PropertyValue', propertyID: 'CA DRE', value: brokerage.dreLicense },
-      ...(brokerage.nmlsId
-        ? [{ '@type': 'PropertyValue', propertyID: 'NMLS', value: brokerage.nmlsId }]
-        : []),
-    ],
+    identifier: [{ '@type': 'PropertyValue', propertyID: 'CA DRE', value: brokerage.dreLicense }],
     employee: { '@id': ids.agent },
     ...(site.social.length ? { sameAs: site.social } : {}),
   };
@@ -72,7 +68,7 @@ export function agentLd() {
     '@id': ids.agent,
     name: agent.name,
     jobTitle: `${agent.title}, Mortgage Loan Originator`,
-    worksFor: { '@id': ids.organization },
+    worksFor: [{ '@id': ids.organization }, { '@id': ids.mortgageCompany }],
     telephone: `+1${agent.phone}`,
     email: `mailto:${agent.email}`,
     image: `${site.origin}${agent.photo}`,
@@ -80,6 +76,22 @@ export function agentLd() {
     identifier: [
       { '@type': 'PropertyValue', propertyID: 'CA DRE', value: agent.dreLicense },
       { '@type': 'PropertyValue', propertyID: 'NMLS', value: agent.nmlsId },
+    ],
+  };
+}
+
+export function mortgageCompanyLd() {
+  return {
+    '@type': ['Organization', 'FinancialService'],
+    '@id': ids.mortgageCompany,
+    legalName: mortgageCompany.legalName,
+    name: mortgageCompany.dba,
+    address: organizationLd().address,
+    identifier: [
+      { '@type': 'PropertyValue', propertyID: 'NMLS', value: mortgageCompany.nmlsId },
+      ...(mortgageCompany.dreLicense
+        ? [{ '@type': 'PropertyValue', propertyID: 'CA DRE', value: mortgageCompany.dreLicense }]
+        : []),
     ],
   };
 }

@@ -16,7 +16,9 @@ export function checkBuild(distDir, target) {
     if (m.headerNoindex) problems.push('_headers sends X-Robots-Tag: noindex (hidden build).');
     if (m.pagesNoindex.length) problems.push(`${m.pagesNoindex.length} indexable page(s) carry noindex, e.g. ${m.pagesNoindex[0]}`);
     const home = htmlPages(distDir).find((p) => p.path === '/');
-    if (home && !/Company NMLS #\d+/.test(home.html)) problems.push('Company NMLS ID is missing from the disclosures (required before launch).');
+    if (home && !/NMLS #1907086/.test(home.html)) problems.push('Mortgage company NMLS ID is missing from the disclosures.');
+    const missing = htmlPages(distDir).map((p) => p.html.match(/data-missing-before-launch="([^"]+)"/)?.[1]).find(Boolean);
+    if (missing) problems.push(`Required licence details are still missing: ${missing}`);
   } else if (target === 'preview') {
     if (!m.robotsDisallowAll) problems.push('Preview robots.txt must disallow everything.');
     if (!m.headerNoindex) problems.push('Preview must send X-Robots-Tag: noindex.');

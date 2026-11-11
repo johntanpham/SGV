@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { checkBuild } from '../../scripts/guard.mjs';
 
 const page = (robots: string, nmls = true) =>
-  `<!doctype html><html lang="en" data-indexable="true"><head><title>T</title><meta name="robots" content="${robots}"></head><body><main>x</main><footer>${nmls ? 'Company NMLS #123456' : ''}</footer></body></html>`;
+  `<!doctype html><html lang="en" data-indexable="true"><head><title>T</title><meta name="robots" content="${robots}"></head><body><main>x</main><footer>${nmls ? 'NMLS #1907086' : 'NMLS #1907086<span hidden data-missing-before-launch="O.A.B.M. Inc. DRE licence number"></span>'}</footer></body></html>`;
 
 function fakeBuild(opts: { robots: string; headers: string; meta: string; nmls?: boolean }) {
   const dir = mkdtempSync(join(tmpdir(), 'guard-'));
@@ -32,10 +32,10 @@ describe('deploy guard', () => {
   it('refuses a production build that still sends X-Robots-Tag: noindex', () => {
     expect(checkBuild(mixed, 'production').ok).toBe(false);
   });
-  it('refuses production while the company NMLS ID is missing', () => {
+  it('refuses production while a required licence detail is missing', () => {
     const r = checkBuild(liveNoNmls, 'production');
     expect(r.ok).toBe(false);
-    expect(r.problems.join(' ')).toMatch(/Company NMLS/);
+    expect(r.problems.join(' ')).toMatch(/O\.A\.B\.M\. Inc\. DRE licence number/);
   });
   it('accepts a fully indexable production build', () => {
     expect(checkBuild(live, 'production')).toMatchObject({ ok: true });

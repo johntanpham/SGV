@@ -8,14 +8,14 @@ Tick each box when done. Menu names are current as of November 2026; if a label 
 The current one-page site shows "NMLS #000000". Change it in whatever tool built that page to:
 `Bao Nguyen, Broker Associate · DRE #02014645 · NMLS #1317747 · Virchu Financial & Investment, DRE #02075357`
 
-### ☐ 2. Get Virchu's company NMLS ID (the number sent, 02075357, is Virchu's DRE number, not NMLS)
-Ask Jade, or look it up:
-1. Go to https://www.nmlsconsumeraccess.org
-2. Tick the box to accept the terms, type `Virchu` in the search box, press Search.
-3. Open the COMPANY result and copy the "NMLS ID".
-Send it to Claude. The launch command refuses to run until it's in the site.
+### ☐ 2. O.A.B.M. Inc.'s DRE licence number (last licence detail needed)
+Bao's mortgage licence is sponsored by **O.A.B.M. Inc. (dba Virchu Capital), NMLS #1907086** (confirmed on NMLS Consumer Access 2026-11-10).
+1. https://www.nmlsconsumeraccess.org → search `1907086` → open O.A.B.M. INC.
+2. Under **State Licenses/Registrations**, click **California - DRE** (or **View Details**) → copy the **License Number** (8 digits).
+Send it to Claude. The launch command refuses to run until it's on the site.
+Also ask Jade/O.A.B.M. to approve Bao advertising loans on this site.
 
-### ☐ 3. Double-check Bao's licences (2 minutes)
+### ✅ 3. Bao's licences (NMLS checked 2026-11-10: authorized to represent O.A.B.M. Inc.; CA DRE broker licence with MLO endorsement, active)
 - **DRE:** https://www2.dre.ca.gov/PublicASP/pplinfo.asp → enter `02014645` in "License ID" → Find. Confirm: status "LICENSED", a "Mortgage Loan Originator" endorsement, responsible broker = Virchu.
 - **NMLS:** https://www.nmlsconsumeraccess.org → search `1317747` → confirm the California DRE licence shows "Approved" / authorized to represent Virchu.
 Tell Claude if anything differs.

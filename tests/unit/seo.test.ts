@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { canonicalUrl, buildTitle, breadcrumbLd, organizationLd, agentLd } from '../../src/lib/seo';
-import { formatPhone, telHref, agent, brokerage } from '../../src/config/site';
+import { canonicalUrl, buildTitle, breadcrumbLd, organizationLd, agentLd, mortgageCompanyLd } from '../../src/lib/seo';
+import { formatPhone, telHref, agent, brokerage, mortgageCompany } from '../../src/config/site';
 import { robotsBody, AI_CRAWLERS } from '../../src/pages/robots.txt';
 import { pageType, urlPathFor, parsePage, contentHash } from '../../scripts/lib/build-inspect.mjs';
 
@@ -48,6 +48,12 @@ describe('structured data', () => {
     const ids = agentLd().identifier.map((i) => i.value);
     expect(ids).toContain(agent.dreLicense);
     expect(ids).toContain(agent.nmlsId);
+  });
+  it('mortgage company carries its NMLS ID and trade name', () => {
+    const m = mortgageCompanyLd();
+    expect(m.identifier[0]?.value).toBe(mortgageCompany.nmlsId);
+    expect(m.name).toBe('Virchu Capital');
+    expect(m.legalName).toBe('O.A.B.M. Inc.');
   });
   it('organization carries the brokerage DRE number', () => {
     expect(organizationLd().identifier[0]?.value).toBe(brokerage.dreLicense);
