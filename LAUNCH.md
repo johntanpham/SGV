@@ -37,9 +37,10 @@ Code lives in the private repository https://github.com/johntanpham/SGV (Claude 
 
 ## 🚀 LAUNCHED 2026-11-10
 sangabrielvalleymortgagebroker.com now served by Worker `sgvmb` (production branch). Old Worker `oab-sky` kept untouched for rollback (re-add the domain there to revert).
+IndexNow: 28 URLs sent at launch (HTTP 202); every production deploy now sends changed URLs.
 Verified live: 200 on home/city/Vietnamese pages, index robots meta, no X-Robots-Tag, robots.txt open with AI crawlers, sitemaps live, 404 page, http -> https.
 
-### ☐ www.sangabrielvalleymortgagebroker.com (not set up; Claude's session was blocked from DNS changes)
+### ✅ www.sangabrielvalleymortgagebroker.com (done 2026-11-10 by John: proxied www record + 301 Redirect Rule to the root, path and query kept; verified)
 1. Cloudflare → your domain → **DNS** → **Records** → **Add record**: Type **A**, Name **www**, IPv4 **192.0.2.1**, Proxy status **Proxied** (orange cloud) → **Save**.
 2. Domain → **Rules** → **Redirect Rules** → **Create rule** → **Templates** → "Redirect from WWW to root" → **Deploy**.
 
