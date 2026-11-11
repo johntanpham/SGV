@@ -8,7 +8,7 @@ Tick each box when done. Menu names are current as of November 2026; if a label 
 The current one-page site shows "NMLS #000000". Change it in whatever tool built that page to:
 `Bao Nguyen, Broker Associate · DRE #02014645 · NMLS #1317747 · Virchu Financial & Investment, DRE #02075357`
 
-### ☐ 2. Get Virchu's company NMLS ID
+### ☐ 2. Get Virchu's company NMLS ID (the number sent, 02075357, is Virchu's DRE number, not NMLS)
 Ask Jade, or look it up:
 1. Go to https://www.nmlsconsumeraccess.org
 2. Tick the box to accept the terms, type `Virchu` in the search box, press Search.
@@ -23,7 +23,7 @@ Tell Claude if anything differs.
 ### ✅ 4. GitHub
 Code lives in the private repository https://github.com/johntanpham/SGV (Claude app installed on it).
 
-### ☐ 5. Connect the repository to Cloudflare (hidden preview builds itself on every change)
+### ✅ 5. Connect the repository to Cloudflare (done 2026-11-10; preview: https://sgvmb-preview.johnphamtherealtor.workers.dev) (hidden preview builds itself on every change)
 1. https://dash.cloudflare.com → left menu **Workers & Pages** → **Create** (or **Create application**).
 2. Choose **Import a repository** → **GitHub** → connect your GitHub account if asked (allow access to the **SGV** repository) → pick **johntanpham/SGV**.
 3. Fill in:

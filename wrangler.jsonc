@@ -4,6 +4,9 @@
   "name": "sgvmb",
   "account_id": "97a61ea3940bdb09bb7cde99b1a28a91",
   "compatibility_date": "2026-11-01",
+  // Production serves only the real domain (no workers.dev copy, no version preview URLs).
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page",
@@ -12,7 +15,9 @@
   "env": {
     // Hidden preview worker on workers.dev. Never serves the real domain.
     "preview": {
-      "name": "sgvmb-preview"
+      "name": "sgvmb-preview",
+      "workers_dev": true,
+      "preview_urls": false
     }
   }
 }
