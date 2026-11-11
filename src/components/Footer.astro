@@ -18,7 +18,7 @@ const a = brokerage.address;
 ---
 <footer class="site-footer">
   <div class="wrap grid">
-    <div>
+    <div class="f-col f-wide">
       <p class="f-brand">{site.name}</p>
       <p>
         {agent.name}, {agent.title}<br />
@@ -27,7 +27,7 @@ const a = brokerage.address;
         {tr.languages}
       </p>
     </div>
-    <div>
+    <div class="f-col f-wide">
       <p class="f-head">{tr.office}</p>
       <address>
         {brokerage.name}<br />
@@ -35,20 +35,20 @@ const a = brokerage.address;
         {a.city}, {a.region} {a.postalCode}
       </address>
     </div>
-    <nav aria-label={lang === 'vi' ? 'Dịch vụ' : 'Services'}>
+    <nav class="f-col" aria-label={lang === 'vi' ? 'Dịch vụ' : 'Services'}>
       <p class="f-head">{lang === 'vi' ? 'Dịch vụ' : 'Services'}</p>
       <ul>
         {services.map((sv) => <li><a href={sv.href}>{sv.label}</a></li>)}
       </ul>
     </nav>
-    <nav aria-label={lang === 'vi' ? 'Khu vực' : 'Areas'}>
+    <nav class="f-col f-wide" aria-label={lang === 'vi' ? 'Khu vực' : 'Areas'}>
       <p class="f-head">{lang === 'vi' ? 'Khu vực' : 'Areas'}</p>
       <ul class="f-areas">
         {cities.map((ct) => <li><a href={areaHref(ct.slug)}>{ct.name}</a></li>)}
       </ul>
     </nav>
     {items.length > 0 && (
-      <nav aria-label={tr.footerNav}>
+      <nav class="f-col" aria-label={tr.footerNav}>
         <p class="f-head">{tr.site}</p>
         <ul>
           {items.map((i) => (
@@ -86,7 +86,7 @@ const a = brokerage.address;
     background: var(--jade-900);
     color: #e9f2ef;
     margin-top: 4rem;
-    padding-block: 2.5rem 1.5rem;
+    padding-block: 2rem 1.25rem;
     font-size: 0.9375rem;
   }
   .site-footer a {
@@ -94,20 +94,37 @@ const a = brokerage.address;
   }
   .grid {
     display: grid;
-    gap: 1.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 1.25rem 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: row dense;
+    align-items: start;
+  }
+  .f-wide {
+    grid-column: 1 / -1;
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 1.35fr 1.1fr 1fr 1.5fr 0.8fr;
+    }
+    .f-wide {
+      grid-column: auto;
+    }
   }
   .f-brand {
     font-family: var(--font-display);
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    line-height: 1.25;
+  }
+  .f-col p {
+    margin-bottom: 0.25rem;
   }
   .f-head {
     font-weight: 700;
     color: #ffffff;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
   }
   address {
     font-style: normal;
@@ -124,27 +141,25 @@ const a = brokerage.address;
   li a {
     display: inline-flex;
     align-items: center;
-    min-height: 48px;
+    min-height: 44px;
   }
   .disclosures {
     border-top: 1px solid rgb(255 255 255 / 0.2);
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    font-size: 0.875rem;
-    line-height: 1.6;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.55;
   }
-  .disclosures a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 48px;
+  .disclosures p {
+    margin-bottom: 0.5rem;
   }
   .bottom {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    margin-top: 1rem;
+    gap: 0.5rem 1rem;
+    margin-top: 0.75rem;
   }
   .copy {
     margin: 0;
