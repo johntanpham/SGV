@@ -35,7 +35,15 @@ Code lives in the private repository https://github.com/johntanpham/SGV (Claude 
 5. Click **Create and deploy**. When the build finishes, the preview link (ending in `.workers.dev`) is shown at the top. Send it to Claude.
 (The Cloudflare API token is not needed; deploys run inside Cloudflare.)
 
-## Needed at launch (Claude will walk you through these when you say go)
+## 🚀 LAUNCHED 2026-11-10
+sangabrielvalleymortgagebroker.com now served by Worker `sgvmb` (production branch). Old Worker `oab-sky` kept untouched for rollback (re-add the domain there to revert).
+Verified live: 200 on home/city/Vietnamese pages, index robots meta, no X-Robots-Tag, robots.txt open with AI crawlers, sitemaps live, 404 page, http -> https.
+
+### ☐ www.sangabrielvalleymortgagebroker.com (not set up; Claude's session was blocked from DNS changes)
+1. Cloudflare → your domain → **DNS** → **Records** → **Add record**: Type **A**, Name **www**, IPv4 **192.0.2.1**, Proxy status **Proxied** (orange cloud) → **Save**.
+2. Domain → **Rules** → **Redirect Rules** → **Create rule** → **Templates** → "Redirect from WWW to root" → **Deploy**.
+
+## Remaining launch items
 
 ### ☐ 6. Domain on Cloudflare
 - **Workers & Pages** → `sgvmb` → **Settings** → **Domains & Routes** → **Add** → **Custom domain** → `sangabrielvalleymortgagebroker.com`.

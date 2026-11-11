@@ -19,4 +19,5 @@ Astro + TypeScript static site for Bao Nguyen (Virchu Financial & Investment), d
 - `scripts/postbuild.mjs`: security/cache headers, sitemaps, truthful `lastmod` ledger (`data/content-ledger.json`).
 - `scripts/guard.mjs`: refuses to deploy a hidden build to the live site (and an indexable build to the preview).
 - `src/i18n/strings.ts`: shared English/Vietnamese interface text. Vietnamese pages live under `src/pages/vi/` (same path as the English page, with `/vi` in front).
+- `EDITING.md`: how to edit the site yourself on github.com.
 - `LAUNCH.md`: things only John can do. `VI-REVIEW.md`: Vietnamese text for Bao to check. `CONTENT-REVIEW.md`: claims for a human to check.
