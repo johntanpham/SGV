@@ -4,7 +4,7 @@
 import { spawn, execFileSync } from 'node:child_process';
 import { mkdirSync, readFileSync, existsSync } from 'node:fs';
 
-const PAGES = ['/'].concat(['/loans/', '/areas/', '/guides/', '/tools/'].filter((p) => existsSync(`dist${p}index.html`)));
+const PAGES = ['/', '/areas/', '/areas/rosemead/', '/real-estate/', '/real-estate/sell/', '/loan-officer/', '/vi/', '/vi/areas/el-monte/', '/about/bao-nguyen/'].filter((p) => existsSync(`dist${p}index.html`));
 const mode = process.env.SITE_MODE === 'production' ? 'production' : 'preview';
 const MIN = { performance: 90, accessibility: 100, 'best-practices': 100, seo: 100 };
 mkdirSync('reports/lighthouse', { recursive: true });

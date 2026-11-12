@@ -8,8 +8,8 @@ export const loanLimits = {
     conforming: { name: 'FHFA, Conforming Loan Limit Values for 2026', url: 'https://www.fhfa.gov/data/conforming-loan-limit' },
     fha: { name: 'HUD, FHA Mortgage Limits', url: 'https://entp.hud.gov/idapp/html/hicostlook.cfm' },
   },
-  /** FHFA usually publishes next year's limits in late November. Update then. */
-  checked: '2026-11-10',
+  /** FHFA usually publishes next year's limits in late November. Update then. Re-checked live 2026-11-11. */
+  checked: '2026-11-11',
 } as const;
 
 /** LA County Development Authority Home Ownership Program (first-time buyers). */
@@ -36,5 +36,7 @@ export const hop = {
 
 export const calhfa = {
   myHomeMaxPct: 3.5,
+  /** Up to 3.5% with a CalHFA FHA first loan, 3% with conventional. Checked on calhfa.ca.gov 2026-11-11. */
+  checked: '2026-11-11',
   source: { name: 'CalHFA MyHome Assistance Program', url: 'https://www.calhfa.ca.gov/homebuyer/programs/myhome.htm' },
 } as const;

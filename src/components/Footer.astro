@@ -1,9 +1,10 @@
 ---
-import { site, agent, brokerage, mortgageCompany, requiredBeforeLaunch, verifyLinks, nav, formatPhone, telHref } from '../config/site';
+import { site, agent, brokerage, mortgageCompany, requiredBeforeLaunch, verifyLinks, formatPhone, telHref } from '../config/site';
 const missing = requiredBeforeLaunch.filter((r) => !r.value).map((r) => r.label);
 import EqualHousing from './EqualHousing.astro';
 import { t, viPath, type Lang } from '../i18n/strings';
 import { serviceLinks } from '../content/services';
+import { infoFooterLinks } from '../content/info';
 import { cities } from '../data/cities';
 interface Props {
   lang?: Lang;
@@ -12,7 +13,7 @@ const { lang = 'en' } = Astro.props;
 const tr = t(lang);
 const services = serviceLinks(lang);
 const areaHref = (slug: string) => (lang === 'vi' ? viPath(`/areas/${slug}/`) : `/areas/${slug}/`);
-const items = nav.filter((n) => n.ready).map((n) => ({ ...n, label: lang === 'vi' ? n.labelVi : n.label, href: lang === 'vi' ? viPath(n.href) : n.href }));
+const info = infoFooterLinks(lang);
 const year = new Date().getFullYear();
 const a = brokerage.address;
 ---
@@ -47,11 +48,11 @@ const a = brokerage.address;
         {cities.map((ct) => <li><a href={areaHref(ct.slug)}>{ct.name}</a></li>)}
       </ul>
     </nav>
-    {items.length > 0 && (
+    {info.length > 0 && (
       <nav class="f-col" aria-label={tr.footerNav}>
         <p class="f-head">{tr.site}</p>
         <ul>
-          {items.map((i) => (
+          {info.map((i) => (
             <li><a href={i.href}>{i.label}</a></li>
           ))}
         </ul>

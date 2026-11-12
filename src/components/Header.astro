@@ -86,7 +86,7 @@ const current = Astro.url.pathname;
     display: inline-flex;
     align-items: center;
     min-height: 48px;
-    padding: 0 0.75rem;
+    padding: 0 0.6rem;
     color: var(--ink);
     text-decoration: none;
     font-weight: 600;
@@ -122,6 +122,7 @@ const current = Astro.url.pathname;
     min-height: 44px;
     padding: 0.5rem 1rem;
     font-size: 0.9375rem;
+    white-space: nowrap;
   }
   @media (max-width: 480px) {
     .actions {
@@ -129,6 +130,14 @@ const current = Astro.url.pathname;
     }
     .call {
       flex: 1;
+      padding-inline: 0.75rem;
+    }
+    nav ul {
+      gap: 0;
+    }
+    nav a {
+      padding: 0 0.5rem;
+      font-size: 0.9375rem;
     }
   }
 </style>

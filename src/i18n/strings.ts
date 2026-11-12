@@ -60,3 +60,9 @@ export function viPath(enPath: string): string {
 export function enPath(vi: string): string {
   return vi === '/vi/' ? '/' : vi.replace(/^\/vi/, '');
 }
+
+/** "checked Nov 10, 2026" / "kiểm tra ngày 10 tháng 11, 2026" for source lines. */
+export function checkedOn(iso: string, lang: Lang): string {
+  const d = new Intl.DateTimeFormat(lang === 'vi' ? 'vi-VN' : 'en-US', { dateStyle: 'medium', timeZone: 'UTC' }).format(new Date(iso));
+  return lang === 'vi' ? `kiểm tra ngày ${d}` : `checked ${d}`;
+}

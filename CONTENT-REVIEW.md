@@ -11,3 +11,8 @@ Step 1 (home skeleton). Bao or John: check each item, then mark ✅ or write the
 | 5 | Footer | "This website is for information only and is not an offer to lend…" | Standard disclaimer wording; Jade may have Virchu's preferred wording. | ☐ |
 | 6 | Footer | Lead emails go to bao@virchufi.com with a hidden copy to John | Confirm Bao is OK with John receiving copies of leads. | ☐ |
 | 7 | Footer | "Mortgage loans arranged through O.A.B.M. Inc., dba Virchu Capital · NMLS #1907086 · Licensed by the California Department of Real Estate, DRE #[pending]" | Jade / O.A.B.M. should confirm this exact wording. | ☐ |
+| 8 | About Bao | "He joined Virchu Financial & Investment in 2017" and "more than 10 years in banking and consulting" | Taken from Bao's bio. The site avoids "Partner and Co-founder" (see #3). Confirm the wording. | ☐ |
+| 9 | About Bao | Schema lists UC Santa Barbara as Bao's school | From Bao's bio; confirm. | ☐ |
+| 10 | Privacy | Short plain-language policy: no analytics, no cookies, no forms; Cloudflare request logs; California residents may ask for deletion | Written by Claude, not a lawyer. Jade or counsel should approve before relying on it. | ☐ |
+| 11 | Contact | "Please call ahead; Bao often meets clients at their home or by phone." No office hours are listed. | Add hours if Bao keeps regular ones. | ☐ |
+| 12 | Licenses | Lists all three licence holders, with links to the NMLS and DRE records | Jade / O.A.B.M. should confirm this is the disclosure set they want. | ☐ |

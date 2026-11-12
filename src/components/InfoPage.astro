@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from './CtaBand.astro';
+import { agent } from '../config/site';
+import { infoContent, type InfoId } from '../content/info';
+import { t, type Lang } from '../i18n/strings';
+import { ids, canonicalUrl } from '../lib/seo';
+
+interface Props {
+  id: InfoId;
+  lang: Lang;
+}
+const { id, lang } = Astro.props;
+const c = infoContent(id, lang);
+const tr = t(lang);
+const home = lang === 'vi' ? '/vi/' : '/';
+const crumbs = [{ name: tr.home, path: home }, { name: c.crumb, path: c.path }];
+const pageType = id === 'about' ? 'ProfilePage' : id === 'contact' ? 'ContactPage' : 'WebPage';
+const schema = [
+  {
+    '@type': pageType,
+    '@id': `${canonicalUrl(c.path)}#webpage`,
+    url: canonicalUrl(c.path),
+    name: c.title,
+    inLanguage: lang,
+    dateModified: c.updated,
+    isPartOf: { '@id': ids.website },
+    ...(id === 'about' ? { mainEntity: { '@id': ids.agent } } : { about: { '@id': ids.organization } }),
+  },
+];
+const updatedLabel = lang === 'vi' ? 'Cập nhật' : 'Last updated';
+const fmt = new Intl.DateTimeFormat(lang === 'vi' ? 'vi-VN' : 'en-US', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(c.updated));
+const ext = lang === 'vi' ? '(mở tab mới)' : '(opens in a new tab)';
+---
+<BaseLayout title={c.title} description={c.description} path={c.path} crumbs={crumbs} lang={lang} schema={schema}>
+  <article class="wrap info">
+    <div class:list={['head', { 'with-photo': c.photo }]}>
+      {c.photo && (
+        <picture>
+          <source srcset="/images/bao-nguyen.webp" type="image/webp" />
+          <img src={agent.photo} width={agent.photoWidth} height={agent.photoHeight} alt={agent.name} loading="eager" decoding="async" />
+        </picture>
+      )}
+      <div>
+        <h1>{c.h1}</h1>
+        <p class="lead">{c.lead}</p>
+      </div>
+    </div>
+    {c.sections.map((s, i) => (
+      <section aria-labelledby={`s${i}`}>
+        <h2 id={`s${i}`}>{s.h2}</h2>
+        {s.p?.map((x) => <p>{x}</p>)}
+        {s.list && <ul class="ticks">{s.list.map((x) => <li>{x}</li>)}</ul>}
+        {s.links && (
+          <ul class="links">
+            {s.links.map((l) =>
+              l.external ? (
+                <li><a href={l.href} rel="noopener" target="_blank">{l.label}<span class="visually-hidden"> {ext}</span> ↗</a></li>
+              ) : (
+                <li><a href={l.href}>{l.label} →</a></li>
+              ),
+            )}
+          </ul>
+        )}
+      </section>
+    ))}
+    <p class="updated">{updatedLabel}: <time datetime={c.updated}>{fmt}</time></p>
+    {c.cta && <CtaBand text={c.h1} lang={lang} strong />}
+  </article>
+</BaseLayout>
+
+<style>
+  .info {
+    max-width: 52rem;
+    padding-block: 1.5rem 0;
+  }
+  .head.with-photo {
+    display: grid;
+    gap: 1.25rem;
+    align-items: center;
+  }
+  @media (min-width: 640px) {
+    .head.with-photo {
+      grid-template-columns: 180px 1fr;
+    }
+  }
+  .head img {
+    width: 180px;
+    height: auto;
+    border-radius: 12px;
+  }
+  .lead {
+    font-size: 1.1875rem;
+    color: var(--ink-soft);
+  }
+  .ticks {
+    padding-left: 1.25rem;
+  }
+  .ticks li {
+    margin-bottom: 0.4rem;
+  }
+  .links {
+    list-style: none;
+    padding: 0;
+  }
+  .links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-weight: 600;
+  }
+  .updated {
+    font-size: 0.875rem;
+    color: var(--ink-soft);
+    margin-top: 2rem;
+  }
+</style>

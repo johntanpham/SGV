@@ -5,6 +5,31 @@ import type { Lang } from './strings';
 export const usd = (n: number) => `$${Math.round(n).toLocaleString('en-US')}`;
 export const num = (n: number) => n.toLocaleString('en-US');
 
+import { cities } from '../data/cities';
+
+const median = (a: number[]) => {
+  const b = [...a].sort((x, y) => x - y);
+  const m = Math.floor(b.length / 2);
+  return b.length % 2 ? b[m] : (b[m - 1] + b[m]) / 2;
+};
+const rankOf = (c: City, key: 'medianValue' | 'ownerRate' | 'medianRent' | 'householdSize' | 'otherLanguage') =>
+  [...cities].sort((a, b) => b[key] - a[key]).findIndex((x) => x.slug === c.slug) + 1;
+
+/** Numbers that compare one city with the other cities we cover. Unique per city. */
+export function cityCompare(c: City) {
+  const valueMedian = median(cities.map((x) => x.medianValue));
+  const valuePct = Math.round(((c.medianValue - valueMedian) / valueMedian) * 100);
+  const rentRank = rankOf(c, 'medianRent');
+  const ownerRank = rankOf(c, 'ownerRate');
+  const valueRank = rankOf(c, 'medianValue');
+  const sizeRank = rankOf(c, 'householdSize');
+  const nbs = c.neighbors.map((s) => cities.find((x) => x.slug === s)!).filter(Boolean).slice(0, 2);
+  return { valueMedian, valuePct, rentRank, ownerRank, valueRank, sizeRank, nbs, n: cities.length };
+}
+
+const ordinalEn = (n: number) => (n === 1 ? 'highest' : n === 2 ? 'second-highest' : n === 3 ? 'third-highest' : `${n}th of ${cities.length}`);
+const ordinalVi = (n: number) => (n === 1 ? 'cao nhất' : `cao thứ ${n}`);
+
 export function cityFacts(c: City) {
   const aboveLimit = c.medianValue > loanLimits.conforming.oneUnit;
   const cashOutCap = Math.round((c.medianValue * 0.8) / 1000) * 1000;
@@ -42,8 +67,20 @@ export function cityCopy(c: City, lang: Lang) {
       limitsImplication: aboveLimit
         ? `Giá trị nhà trung vị ở ${n} là ${usd(c.medianValue)}, cao hơn hạn mức của quận, nên nhiều người mua ở ${n} cần khoản vay jumbo hoặc trả trước nhiều hơn để nằm trong hạn mức conforming.`
         : `Với giá trị nhà trung vị khoảng ${usd(c.medianValue)}, phần lớn nhà ở ${n} có thể vay bằng khoản vay thông thường (conventional) hoặc FHA, không cần khoản vay jumbo.`,
+      compareH2: `${n} so với các thành phố lân cận`,
+      compareP: (() => {
+        const k = cityCompare(c);
+        const vs = k.valuePct === 0 ? 'ngang mức giữa' : k.valuePct > 0 ? `cao hơn ${k.valuePct}% so với mức giữa` : `thấp hơn ${Math.abs(k.valuePct)}% so với mức giữa`;
+        const nb = k.nbs.map((x) => `${x.name} (${usd(x.medianValue)})`).join(' và ');
+        return `Trong ${k.n} thành phố San Gabriel Valley trên trang này, ${n} có giá trị nhà trung vị ${ordinalVi(k.valueRank)}, ${vs} là ${usd(k.valueMedian)}, và tỷ lệ nhà do chủ ở ${ordinalVi(k.ownerRank)}. Các thành phố gần đó như ${nb} cho bạn thấy khoảng giá. Mỗi hộ ở đây trung bình ${c.householdSize} người, ${ordinalVi(k.sizeRank)} trong nhóm, điều thường ảnh hưởng đến số phòng ngủ người mua cần.`;
+      })(),
       refiH2: `Tái tài trợ và rút tiền mặt từ nhà ở ${n}`,
-      refiP1: `Khoảng ${c.ownerRate}% số nhà ở ${n} do chính chủ sở hữu ở. Nếu lãi suất đã giảm kể từ khi bạn mua nhà, tái tài trợ (rate-and-term) có thể giảm tiền trả hàng tháng hoặc rút ngắn thời hạn vay.`,
+      refiP1:
+        c.ownerRate >= 55
+          ? `Với ${c.ownerRate}% số nhà do chủ sở hữu ở, nhiều gia đình ở ${n} đã sở hữu nhà nhiều năm và tích lũy được giá trị đáng kể. Nếu lãi suất đã giảm kể từ khi mua, tái tài trợ có thể giảm tiền trả hàng tháng hoặc rút ngắn thời hạn vay.`
+          : c.ownerRate < 45
+            ? `Chỉ khoảng ${c.ownerRate}% số nhà ở ${n} do chủ ở, nên nhiều cư dân đang thuê nhà. Với tiền thuê trung vị ${usd(c.medianRent)} mỗi tháng, một số người thuê thấy việc mua nhà gần hơn họ nghĩ, còn chủ nhà ở đây thường tái tài trợ để có tiền lo cho gia đình hoặc xây ADU.`
+            : `Khoảng ${c.ownerRate}% số nhà ở ${n} do chính chủ sở hữu ở. Nếu lãi suất đã giảm kể từ khi bạn mua nhà, tái tài trợ (rate-and-term) có thể giảm tiền trả hàng tháng hoặc rút ngắn thời hạn vay.`,
       refiP2: `Nếu bạn cần tiền để sửa nhà, xây ADU, đóng học phí hay trả các khoản nợ lãi cao, tái tài trợ rút tiền mặt hoặc HELOC cho phép bạn vay dựa trên phần giá trị đã tích lũy. Nhiều khoản vay rút tiền mặt thông thường cho tổng số nợ tối đa 80% giá trị nhà; với giá trị trung vị ${usd(c.medianValue)} ở ${n}, con số đó khoảng ${usd(cashOutCap)} tổng khoản vay, trừ đi số còn nợ. Hạn mức thực tế của bạn tùy vào tín dụng, thu nhập, căn nhà và chương trình vay.`,
       buyH2: `Mua nhà ở ${n}: hỗ trợ tiền trả trước`,
       buyP1: inHop
@@ -56,8 +93,8 @@ export function cityCopy(c: City, lang: Lang) {
       allAreas: 'Tất cả khu vực phục vụ',
       faqH2: `Câu hỏi thường gặp về vay mua nhà ở ${n}`,
       faq: [
-        [`Tôi nên dùng môi giới vay ở ${n} hay đến thẳng ngân hàng?`, 'Ngân hàng chỉ cho vay sản phẩm của chính họ. Môi giới vay so sánh chương trình từ nhiều nhà cho vay bán sỉ, có lợi nếu bạn tự kinh doanh, có căn nhà đặc biệt, hoặc muốn có thêm lựa chọn. Dù chọn cách nào, bạn đều nhận Bản Ước tính Khoản vay (Loan Estimate) để so sánh chi phí.'],
-        [`Tái tài trợ ở ${n} mất bao lâu?`, 'Nhiều hồ sơ tái tài trợ hoàn tất trong khoảng 30 đến 45 ngày, tùy vào thẩm định giá, thủ tục chủ quyền (title) và tốc độ nộp giấy tờ.'],
+        [`Giá nhà trung vị ở ${n} là bao nhiêu?`, `Theo Cục Thống kê Hoa Kỳ (ACS 2020-2024), giá trị nhà trung vị do chủ ở tại ${n} là ${usd(c.medianValue)}. Giá từng căn tùy khu phố, diện tích và tình trạng nhà; Bao có thể làm bản phân tích miễn phí cho căn bạn quan tâm.`],
+        [`Người mua nhà lần đầu ở ${n} có được Quận Los Angeles hỗ trợ tiền trả trước không?`, inHop ? `Có. ${n} nằm trong danh sách thành phố tham gia chương trình HOP của LACDA, hỗ trợ tới ${usd(hop.hop80Max)} tùy thu nhập.` : `Không qua chương trình HOP của quận, vì ${n} không có trong danh sách thành phố tham gia. CalHFA MyHome (tới ${calhfa.myHomeMaxPct}%) vẫn áp dụng.`],
         [`Bạn phục vụ những mã ZIP nào ở ${n}?`, `Tất cả, bao gồm ${zipList}.`],
       ] as [string, string][],
       ctaH2: `Nói chuyện với Bao về khoản vay ở ${n}`,
@@ -87,8 +124,20 @@ export function cityCopy(c: City, lang: Lang) {
     limitsImplication: aboveLimit
       ? `The median home value in ${n} is ${usd(c.medianValue)}, above the county limit, so many ${n} buyers need a jumbo loan or a larger down payment to stay within conforming limits.`
       : `With a median home value of ${usd(c.medianValue)}, a typical ${n} home can be financed with a conventional or FHA loan rather than a jumbo loan.`,
+    compareH2: `How ${n} compares with nearby cities`,
+    compareP: (() => {
+      const k = cityCompare(c);
+      const vs = k.valuePct === 0 ? 'right at the middle' : k.valuePct > 0 ? `${k.valuePct}% above the middle` : `${Math.abs(k.valuePct)}% below the middle`;
+      const nb = k.nbs.map((x) => `${x.name} (${usd(x.medianValue)})`).join(' and ');
+      return `Among the ${k.n} San Gabriel Valley cities on this site, ${n} has the ${ordinalEn(k.valueRank)} median home value, ${vs} of ${usd(k.valueMedian)}, and the ${ordinalEn(k.ownerRank)} share of owner-occupied homes. Nearby ${nb} give you a sense of the range. Households here average ${c.householdSize} people, the ${ordinalEn(k.sizeRank)} of the group, which often shapes how many bedrooms buyers look for.`;
+    })(),
     refiH2: `Refinance and cash-out refinance in ${n}`,
-    refiP1: `About ${c.ownerRate}% of homes in ${n} are lived in by their owners. If rates have dropped since you bought, a rate-and-term refinance can lower your monthly payment or shorten your loan.`,
+    refiP1:
+      c.ownerRate >= 55
+        ? `With ${c.ownerRate}% of homes lived in by their owners, many ${n} households have owned for years and built real equity. If rates have dropped since you bought, a rate-and-term refinance can lower your payment or shorten your loan; if you want to use that equity, keep reading.`
+        : c.ownerRate < 45
+          ? `Only about ${c.ownerRate}% of ${n} homes are owner-occupied, so many residents rent. With a median rent of ${usd(c.medianRent)} a month, some renters find that buying is closer than they think, and owners here often refinance to free up cash for family or an ADU.`
+          : `About ${c.ownerRate}% of homes in ${n} are lived in by their owners. If rates have dropped since you bought, a rate-and-term refinance can lower your monthly payment or shorten your loan.`,
     refiP2: `If you need cash for renovations, an ADU, tuition or paying off high-interest debt, a cash-out refinance or a HELOC lets you borrow against your equity. Many conventional cash-out loans allow total borrowing up to 80% of the home's value; at ${n}'s median value of ${usd(c.medianValue)}, that is about ${usd(cashOutCap)} in total loan, minus what you still owe. Your own limit depends on your credit, income, property and program.`,
     buyH2: `Buying a home in ${n}: down payment help`,
     buyP1: inHop
@@ -101,8 +150,8 @@ export function cityCopy(c: City, lang: Lang) {
     allAreas: 'All areas I serve',
     faqH2: `${n} mortgage FAQ`,
     faq: [
-      [`Should I use a mortgage broker in ${n} or go to a bank?`, "A bank offers its own loans. A mortgage broker compares programs from several wholesale lenders, which can help if you're self-employed, have an unusual property, or simply want more options. Either way, you get a Loan Estimate to compare costs."],
-      [`How long does a refinance take in ${n}?`, 'Many refinances close in about 30 to 45 days, depending on the appraisal, title work and how quickly documents come in.'],
+      [`What is the median home value in ${n}?`, `According to the U.S. Census (ACS 2020-2024), the median value of owner-occupied homes in ${n} is ${usd(c.medianValue)}. Individual homes vary by neighborhood, size and condition; Bao can run a free analysis for a specific address.`],
+      [`Can first-time buyers in ${n} get Los Angeles County down payment help?`, inHop ? `Yes. ${n} is a participating city in LACDA's Home Ownership Program, which offers up to ${usd(hop.hop80Max)} depending on income.` : `Not through the county's HOP program, because ${n} is not on the participating-city list. CalHFA MyHome (up to ${calhfa.myHomeMaxPct}%) still applies.`],
       [`Which ${n} ZIP codes do you serve?`, `All of them, including ${zipList}.`],
     ] as [string, string][],
     ctaH2: `Talk to Bao about your ${n} loan`,

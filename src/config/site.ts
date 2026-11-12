@@ -77,7 +77,7 @@ export const requiredBeforeLaunch: { label: string; value: string }[] = [
 /** Links to official licence lookups shown in the footer. */
 export const verifyLinks = {
   nmls: `https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${agent.nmlsId}`,
-  dre: 'https://www2.dre.ca.gov/PublicASP/pplinfo.asp',
+  dre: `https://www2.dre.ca.gov/PublicASP/pplinfo.asp?License_id=${agent.dreLicense}`,
 } as const;
 
 /**
@@ -90,7 +90,8 @@ export const nav: { label: string; labelVi: string; href: string; ready: boolean
   { label: 'Areas', labelVi: 'Khu vực', href: '/areas/', ready: true },
   { label: 'Guides', labelVi: 'Hướng dẫn', href: '/guides/', ready: false },
   { label: 'Tools', labelVi: 'Công cụ', href: '/tools/', ready: false },
-  { label: 'About Bao', labelVi: 'Về Bao', href: '/about/bao-nguyen/', ready: false },
+  { label: 'About', labelVi: 'Về Bao', href: '/about/bao-nguyen/', ready: true },
+  // Contact page exists (/contact/) and is linked from the footer; the header's Call button covers it.
   { label: 'Contact', labelVi: 'Liên hệ', href: '/contact/', ready: false },
 ];
 

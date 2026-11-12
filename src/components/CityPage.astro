@@ -5,7 +5,7 @@ import { cities, citiesBySlug, CENSUS_SOURCE, VIET_SOURCE, type City } from '../
 import Faq from './Faq.astro';
 import { loanLimits, hop } from '../data/loan-limits';
 import { agent, formatPhone, telHref } from '../config/site';
-import { t, viPath, type Lang } from '../i18n/strings';
+import { t, viPath, checkedOn, type Lang } from '../i18n/strings';
 import { ids, canonicalUrl, faqLd } from '../lib/seo';
 
 interface Props {
@@ -66,7 +66,7 @@ const schema = [
       </dl>
       <p class="source">
         {c.source}: <a href={CENSUS_SOURCE.url} rel="noopener">{CENSUS_SOURCE.name}</a>
-        {city.vietnamese && <>; <a href={VIET_SOURCE.url} rel="noopener">{VIET_SOURCE.name}</a></>}.
+        {city.vietnamese && <>; <a href={VIET_SOURCE.url} rel="noopener">{VIET_SOURCE.name}</a></>} ({checkedOn(CENSUS_SOURCE.checked, lang)}).
       </p>
     </section>
 
@@ -76,8 +76,13 @@ const schema = [
       <p>{c.limitsImplication}</p>
       <p class="source">
         {c.source}: <a href={loanLimits.sources.conforming.url} rel="noopener">{loanLimits.sources.conforming.name}</a>;
-        <a href={loanLimits.sources.fha.url} rel="noopener">{loanLimits.sources.fha.name}</a>.
+        <a href={loanLimits.sources.fha.url} rel="noopener">{loanLimits.sources.fha.name}</a> ({checkedOn(loanLimits.checked, lang)}).
       </p>
+    </section>
+
+    <section aria-labelledby="compare">
+      <h2 id="compare">{c.compareH2}</h2>
+      <p>{c.compareP}</p>
     </section>
 
     <section aria-labelledby="refi">
@@ -90,7 +95,7 @@ const schema = [
       <h2 id="buy">{c.buyH2}</h2>
       <p>{c.buyP1}</p>
       <p>{c.buyP2}</p>
-      <p class="source">{c.source}: <a href={hop.source.url} rel="noopener">{hop.source.name}</a>.</p>
+      <p class="source">{c.source}: <a href={hop.source.url} rel="noopener">{hop.source.name}</a> ({checkedOn(hop.checked, lang)}).</p>
     </section>
 
     <section aria-labelledby="lang">

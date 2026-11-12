@@ -35,12 +35,15 @@ Wait about a minute, then open https://sgvmb-preview.johnphamtherealtor.workers.
 | City page wording (all cities at once) | `src/i18n/city-copy.ts` |
 | Realtor, seller's agent, buyer's agent and loan officer pages (both languages) | `src/content/services.ts` |
 | Buttons, footer and disclaimer wording (both languages) | `src/i18n/strings.ts` |
-| Loan limits, LA County program amounts | `src/data/loan-limits.ts` |
+| About Bao, Contact, Licenses and Privacy pages (both languages) | `src/content/info.ts` |
+| Loan limits, LA County program amounts (and the "checked" date shown next to them) | `src/data/loan-limits.ts` |
 | Bao's photo | `public/images/` → **Add file** → **Upload files** → upload a new `bao-nguyen.png` with the same name |
 
 ## Undo a live change in one click
 Cloudflare → Workers & Pages → **sgvmb** → **Deployments** → on an earlier version click **⋯** → **Rollback**.
 
 ## Yearly reminders
-- **Late November:** FHFA publishes next year's loan limits. Update `src/data/loan-limits.ts`.
+- **Late November:** FHFA publishes next year's loan limits. Update `src/data/loan-limits.ts`, including its `checked` date.
+- **Whenever you change a page in `src/content/info.ts`:** update `UPDATED` at the top so the "Last updated" date stays honest.
+- **If you ever turn on Google Analytics** (`ga4Id` in `src/config/site.ts`): the Privacy page switches its wording automatically; read it once to confirm.
 - **Before Feb 2027:** Bao's and Jade Rose Financial's DRE licences renew. Licence numbers stay the same.

@@ -3,7 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { cities, CENSUS_SOURCE } from '../data/cities';
 import { cityFacts, usd } from '../i18n/city-copy';
 import { loanLimits, hop } from '../data/loan-limits';
-import { t, viPath, type Lang } from '../i18n/strings';
+import { t, viPath, checkedOn, type Lang } from '../i18n/strings';
 import Faq from './Faq.astro';
 import { faqLd } from '../lib/seo';
 
@@ -82,7 +82,7 @@ const faq: [string, string][] = vi
     <Faq heading={vi ? 'Câu hỏi thường gặp' : 'Frequently asked questions'} items={faq} />
     <p class="source">
       {copy.source}: <a href={CENSUS_SOURCE.url} rel="noopener">{CENSUS_SOURCE.name}</a>;
-      <a href={hop.source.url} rel="noopener">{hop.source.name}</a>.
+      <a href={hop.source.url} rel="noopener">{hop.source.name}</a> ({checkedOn(CENSUS_SOURCE.checked, lang)}).
     </p>
   </section>
 </BaseLayout>

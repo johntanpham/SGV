@@ -58,6 +58,8 @@ export function organizationLd() {
       addressCountry: brokerage.address.country,
     },
     identifier: [{ '@type': 'PropertyValue', propertyID: 'CA DRE', value: brokerage.dreLicense }],
+    logo: { '@type': 'ImageObject', url: `${site.origin}/images/logo.png`, width: 512, height: 512 },
+    image: `${site.origin}/og/default.png`,
     employee: { '@id': ids.agent },
     ...(site.social.length ? { sameAs: site.social } : {}),
   };
@@ -74,6 +76,13 @@ export function agentLd() {
     email: `mailto:${agent.email}`,
     image: `${site.origin}${agent.photo}`,
     knowsLanguage: agent.languages,
+    url: `${site.origin}/about/bao-nguyen/`,
+    alumniOf: { '@type': 'CollegeOrUniversity', name: 'University of California, Santa Barbara' },
+    sameAs: [
+      `https://www.nmlsconsumeraccess.org/EntityDetails.aspx/INDIVIDUAL/${agent.nmlsId}`,
+      `https://www2.dre.ca.gov/PublicASP/pplinfo.asp?License_id=${agent.dreLicense}`,
+      ...site.social,
+    ],
     identifier: [
       { '@type': 'PropertyValue', propertyID: 'CA DRE', value: agent.dreLicense },
       { '@type': 'PropertyValue', propertyID: 'NMLS', value: agent.nmlsId },
